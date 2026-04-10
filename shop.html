@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Shop | MINIMALIST Gaming</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#4f46e5",
+          "on-primary": "#ffffff",
+          "surface": "#fbfcfe",
+          "on-surface": "#0f172a",
+          "surface-variant": "#f1f5f9",
+          "on-surface-variant": "#64748b",
+          "outline-variant": "#e2e8f0"
+        },
+        fontFamily: {
+          "headline": ["Outfit", "sans-serif"],
+          "body": ["Outfit", "sans-serif"]
+        },
+        borderRadius: {
+          "md": "16px",
+          "lg": "24px",
+          "xl": "32px",
+          "2xl": "48px"
+        },
+        spacing: {
+          "6": "24px",
+          "12": "48px",
+          "24": "96px"
+        }
+      }
+    }
+  }
+</script>
+<style>
+  /* ── Glass utilities (identical to index) ── */
+  .crystal-liquid-glass {
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(80px) saturate(160%);
+    -webkit-backdrop-filter: blur(80px) saturate(160%);
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: inset 1px 1px 0 0 rgba(255,255,255,0.6), 0 8px 32px 0 rgba(0,0,0,0.05);
+    position: relative; overflow: hidden;
+  }
+  .glass-panel {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(64px) saturate(150%);
+    -webkit-backdrop-filter: blur(64px) saturate(150%);
+    border: 1px solid rgba(255,255,255,0.15);
+    box-shadow: inset 1px 1px 0 0 rgba(255,255,255,0.5), 0 4px 24px rgba(0,0,0,0.04);
+  }
+  .liquid-glass {
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(100px) saturate(200%);
+    -webkit-backdrop-filter: blur(100px) saturate(200%);
+    border: 1px solid rgba(255,255,255,0.3);
+    box-shadow: inset 1.5px 1.5px 0 0 rgba(255,255,255,0.7), 0 12px 40px 0 rgba(31,38,135,0.08);
+    position: relative; overflow: hidden;
+  }
+  .liquid-glass::before {
+    content: '';
+    position: absolute; top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.15), transparent);
+    transform: rotate(45deg);
+    pointer-events: none;
+    animation: shine 8s infinite linear;
+  }
+  @keyframes shine {
+    0%   { transform: translateX(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) rotate(45deg); }
+  }
+
+  /* ── Layout helpers ── */
+  .section-container { max-width:1200px; margin-left:auto; margin-right:auto; padding-left:24px; padding-right:24px; }
+  .hero-container-wide { max-width:1440px; margin-left:auto; margin-right:auto; padding-left:16px; padding-right:16px; }
+
+  /* ── Gradient text ── */
+  .hero-gradient-text {
+    background: linear-gradient(135deg,#4f46e5 0%,#a855f7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* ── Product card badge ── */
+  .badge-hot  { background:#ef4444; color:#fff; }
+  .badge-new  { background:#4f46e5; color:#fff; }
+  .badge-sale { background:#f59e0b; color:#fff; }
+
+  /* ── Filter pill active state ── */
+  .filter-pill { transition: all .2s; cursor:pointer; user-select:none; }
+  .filter-pill.active, .filter-pill:hover {
+    background: #4f46e5;
+    color: #fff;
+    border-color: #4f46e5;
+  }
+
+  /* ── Range slider custom ── */
+  input[type=range] { accent-color:#4f46e5; }
+
+  /* ── Sort dropdown ── */
+  select { background-image: none; }
+
+  /* ── Product card reveal ── */
+  .product-card { transition: transform .3s ease, box-shadow .3s ease; }
+  .product-card:hover { transform: translateY(-4px); }
+  .product-card:hover .card-img { transform: scale(1.06); }
+  .card-img { transition: transform .6s ease; }
+
+  /* ── Quick-add overlay ── */
+  .quick-add-overlay {
+    opacity:0; pointer-events:none; transition: opacity .25s ease;
+  }
+  .product-card:hover .quick-add-overlay {
+    opacity:1; pointer-events:auto;
+  }
+
+  /* ── Wishlist heart ── */
+  .wish-btn { transition: color .2s, transform .2s; }
+  .wish-btn:hover { color:#ef4444; transform:scale(1.2); }
+
+  /* ── Page fade in ── */
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(24px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  .fade-up { animation: fadeUp .5s ease both; }
+  .delay-1 { animation-delay:.1s; }
+  .delay-2 { animation-delay:.2s; }
+  .delay-3 { animation-delay:.3s; }
+
+  /* ── Sidebar sticky ── */
+  .sidebar-sticky { position: sticky; top: 112px; }
+
+  /* ── Scrollbar minimal ── */
+  ::-webkit-scrollbar { width:5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 99px; }
+
+  /* ── Banner gradient overlay ── */
+  .shop-banner-overlay {
+    background: linear-gradient(90deg, rgba(15,23,42,0.72) 0%, rgba(15,23,42,0.1) 100%);
+  }
+
+  /* ── Pagination ── */
+  .page-btn { transition: all .2s; }
+  .page-btn.active { background:#4f46e5; color:#fff; }
+  .page-btn:hover:not(.active) { background:#f1f5f9; }
+</style>
+</head>
+<body class="bg-white font-body text-on-surface antialiased">
+
+<!-- ══════════════════════════════════════
+     NAV  (identical to index)
+══════════════════════════════════════ -->
+<nav class="fixed top-0 left-0 right-0 z-50 pt-6">
+  <div class="max-w-full px-8 md:px-12">
+    <div class="glass-panel h-16 rounded-md px-6 flex items-center justify-between shadow-sm border-white/40">
+      <div class="flex items-center gap-16">
+        <img alt="MINIMALIST" class="h-8 w-auto object-contain"
+             src="https://lh3.googleusercontent.com/aida/ADBb0ujANZWsyTXcsDClfZ0C-f0gZA3uWj4qqTp_8ZZ-a4YoTYLlERVKCvGxzu6FFWkB7i4XoFucqSm9BF_DAYzwnRomSyiwVmhyXqvzZK1J6X0B5CIN-gzSoy5ob5LXhItsXHnbDQyqcyBIwz1b5lZIvdbSavZSkDTW6YFLB6mQBEWo44jY_wKeyG7TmeZL89YTqOgklpYp3O8UoKeAU0b5iU8i6Cug6oUpkNpuhPRChzQ_iCAVCgoHo3irkphR2I5HcYYPEaAwlZzAWr4"/>
+        <div class="hidden lg:flex items-center gap-10">
+          <a class="text-on-surface-variant hover:text-primary transition-colors text-sm whitespace-nowrap" href="#">Home</a>
+          <a class="text-primary font-semibold text-sm whitespace-nowrap" href="#">Store</a>
+          <a class="text-on-surface-variant hover:text-primary transition-colors text-sm whitespace-nowrap" href="#">Design Your Mousepad</a>
+          <a class="text-on-surface-variant hover:text-primary transition-colors text-sm whitespace-nowrap" href="#">Merchandise</a>
+          <a class="text-on-surface-variant hover:text-primary transition-colors text-sm whitespace-nowrap" href="#">Community</a>
+          <a class="text-on-surface-variant hover:text-primary transition-colors text-sm whitespace-nowrap" href="#">Contact</a>
+        </div>
+      </div>
+      <div class="flex items-center gap-8 ml-auto">
+        <div class="relative hidden md:block">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg">search</span>
+          <input class="bg-white/20 border-none rounded-full pl-10 pr-4 py-1.5 text-sm w-48 focus:ring-1 focus:ring-primary/20 backdrop-blur-md" placeholder="Search..." type="text"/>
+        </div>
+        <button class="relative flex items-center justify-center">
+          <span class="material-symbols-outlined text-on-surface-variant">shopping_cart</span>
+          <span class="absolute -top-1.5 -right-1.5 w-4 h-4 bg-primary text-white text-[9px] font-bold rounded-full flex items-center justify-center">3</span>
+        </button>
+        <button class="bg-primary text-white px-6 py-2.5 rounded-md font-headline font-bold text-sm shadow-sm hover:shadow-md transition-all active:scale-95">Sign up</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════
+     SHOP BANNER
+══════════════════════════════════════ -->
+<header class="pt-32 pb-0">
+  <div class="section-container hero-container-wide">
+    <div class="relative h-[320px] w-full rounded-2xl overflow-hidden shadow-2xl">
+      <img alt="Shop Banner"
+           class="absolute inset-0 w-full h-full object-cover"
+           src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAc6gQrMooMBPcQkBaJeJThuXuQvJDpfZMYZrcQ4Yh0RJp1Uj3ZhiK5kVb0V8DTMMZ5ywZjQaNAC59HcV6rs2DkBWAkls4uQmOyLFC8U_B5DbT4lR5to8ON0Tvpd-r0cEIR6jGP6qa_uy4feUl1GjlJ8O59Fh-D7B26VB4x414-hu-5KyMxbb4HYHxb3y9CKEdvXqTEOd_7us3OP3lpM_GlXvgTZ4eZnzxewF44BeDRWpc7mXpxChWF1RXn-0PaJt8XZPGk55GsCj-"/>
+      <div class="shop-banner-overlay absolute inset-0"></div>
+      <div class="absolute inset-0 flex items-center pl-12 md:pl-20">
+        <div class="fade-up">
+          <nav class="flex items-center gap-2 text-white/60 text-xs font-medium mb-4 uppercase tracking-widest">
+            <a href="#" class="hover:text-white transition-colors">Home</a>
+            <span class="material-symbols-outlined text-sm">chevron_right</span>
+            <span class="text-white font-bold">Store</span>
+          </nav>
+          <h1 class="font-headline text-4xl md:text-5xl font-bold text-white leading-tight mb-3">
+            The Full <span class="hero-gradient-text">Collection</span>
+          </h1>
+          <p class="text-white/70 text-base font-medium max-w-md">
+            Premium mousepads crafted for gamers who refuse to compromise on aesthetics or performance.
+          </p>
+        </div>
+      </div>
+      <!-- Stats strip -->
+      <div class="absolute bottom-0 right-0 flex">
+        <div class="liquid-glass px-8 py-4 flex items-center gap-10 rounded-tl-2xl border-white/30">
+          <div class="text-center">
+            <p class="text-white font-headline font-bold text-xl leading-none">120+</p>
+            <p class="text-white/60 text-[10px] font-medium uppercase tracking-widest mt-1">Designs</p>
+          </div>
+          <div class="w-px h-8 bg-white/20"></div>
+          <div class="text-center">
+            <p class="text-white font-headline font-bold text-xl leading-none">6</p>
+            <p class="text-white/60 text-[10px] font-medium uppercase tracking-widest mt-1">Collections</p>
+          </div>
+          <div class="w-px h-8 bg-white/20"></div>
+          <div class="text-center">
+            <p class="text-white font-headline font-bold text-xl leading-none">Free</p>
+            <p class="text-white/60 text-[10px] font-medium uppercase tracking-widest mt-1">Shipping $60+</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════
+     CATEGORY PILLS
+══════════════════════════════════════ -->
+<section class="py-8">
+  <div class="section-container">
+    <div class="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-hide">
+      <button onclick="setActive(this)" class="filter-pill active flex-shrink-0 px-5 py-2 rounded-full border border-slate-200 text-sm font-semibold text-on-surface-variant">
+        All Products
+      </button>
+      <button onclick="setActive(this)" class="filter-pill flex-shrink-0 px-5 py-2 rounded-full border border-slate-200 text-sm font-semibold text-on-surface-variant">
+        Artist Series
+      </button>
+      <button onclick="setActive(this)" class="filter-pill flex-shrink-0 px-5 py-2 rounded-full border border-slate-200 text-sm font-semibold text-on-surface-variant">
+        Cyber Collection
+      </button>
+      <button onclick="setActive(this)" class="filter-pill flex-shrink-0 px-5 py-2 rounded-full border border-slate-200 text-sm font-semibold text-on-surface-variant">
+        Midnight Edition
+      </button>
+      <button onclick="setActive(this)" class="filter-pill flex-shrink-0 px-5 py-2 rounded-full border border-slate-200 text-sm font-semibold text-on-surface-variant">
+        Premium Fluidity
+      </button>
+      <button onclick="setActive(this)" class="filter-pill flex-shrink-0 px-5 py-2 rounded-full border border-slate-200 text-sm font-semibold text-on-surface-variant">
+        New Arrivals
+      </button>
+      <button onclick="setActive(this)" class="filter-pill flex-shrink-0 px-5 py-2 rounded-full border border-slate-200 text-sm font-semibold text-on-surface-variant">
+        Limited Edition
+      </button>
+      <button onclick="setActive(this)" class="filter-pill flex-shrink-0 px-5 py-2 rounded-full border border-slate-200 text-sm font-semibold text-on-surface-variant">
+        Custom Lab
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     MAIN SHOP LAYOUT  (sidebar + grid)
+══════════════════════════════════════ -->
+<section class="pb-24">
+  <div class="section-container">
+    <div class="flex gap-10 items-start">
+
+      <!-- ── SIDEBAR ── -->
+      <aside class="hidden lg:block w-64 flex-shrink-0 sidebar-sticky">
+
+        <!-- Search -->
+        <div class="glass-panel rounded-lg p-4 mb-4">
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg">search</span>
+            <input class="w-full bg-white/40 border border-slate-200 rounded-full pl-10 pr-4 py-2 text-sm focus:ring-1 focus:ring-primary/30 focus:outline-none" placeholder="Search products..."/>
+          </div>
+        </div>
+
+        <!-- Filters card -->
+        <div class="glass-panel rounded-lg p-6 mb-4">
+          <h3 class="font-headline font-bold text-base mb-5 flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-lg">tune</span>
+            Filters
+          </h3>
+
+          <!-- Size -->
+          <div class="mb-6">
+            <p class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-3">Size</p>
+            <div class="flex flex-wrap gap-2">
+              <button class="filter-pill active px-3 py-1 rounded-md border border-slate-200 text-xs font-semibold text-on-surface-variant">All</button>
+              <button class="filter-pill px-3 py-1 rounded-md border border-slate-200 text-xs font-semibold text-on-surface-variant">S</button>
+              <button class="filter-pill px-3 py-1 rounded-md border border-slate-200 text-xs font-semibold text-on-surface-variant">M</button>
+              <button class="filter-pill px-3 py-1 rounded-md border border-slate-200 text-xs font-semibold text-on-surface-variant">L</button>
+              <button class="filter-pill px-3 py-1 rounded-md border border-slate-200 text-xs font-semibold text-on-surface-variant">XL</button>
+              <button class="filter-pill px-3 py-1 rounded-md border border-slate-200 text-xs font-semibold text-on-surface-variant">XXL</button>
+            </div>
+          </div>
+
+          <!-- Price range -->
+          <div class="mb-6">
+            <div class="flex justify-between items-center mb-3">
+              <p class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Price Range</p>
+              <span class="text-xs font-bold text-primary" id="price-label">$0 – $100</span>
+            </div>
+            <input type="range" min="0" max="100" value="100" class="w-full h-1.5 rounded-full"
+                   oninput="document.getElementById('price-label').textContent='$0 – $'+this.value"/>
+          </div>
+
+          <!-- Surface type -->
+          <div class="mb-6">
+            <p class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-3">Surface Type</p>
+            <div class="space-y-2">
+              <label class="flex items-center gap-3 cursor-pointer">
+                <input type="checkbox" checked class="rounded border-slate-300 text-primary focus:ring-primary/20"/>
+                <span class="text-sm text-on-surface-variant font-medium">Speed (Hard)</span>
+              </label>
+              <label class="flex items-center gap-3 cursor-pointer">
+                <input type="checkbox" checked class="rounded border-slate-300 text-primary focus:ring-primary/20"/>
+                <span class="text-sm text-on-surface-variant font-medium">Control (Cloth)</span>
+              </label>
+              <label class="flex items-center gap-3 cursor-pointer">
+                <input type="checkbox" class="rounded border-slate-300 text-primary focus:ring-primary/20"/>
+                <span class="text-sm text-on-surface-variant font-medium">Hybrid</span>
+              </label>
+              <label class="flex items-center gap-3 cursor-pointer">
+                <input type="checkbox" class="rounded border-slate-300 text-primary focus:ring-primary/20"/>
+                <span class="text-sm text-on-surface-variant font-medium">Glass</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Availability -->
+          <div>
+            <p class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-3">Availability</p>
+            <div class="space-y-2">
+              <label class="flex items-center gap-3 cursor-pointer">
+                <input type="checkbox" checked class="rounded border-slate-300 text-primary focus:ring-primary/20"/>
+                <span class="text-sm text-on-surface-variant font-medium">In Stock</span>
+              </label>
+              <label class="flex items-center gap-3 cursor-pointer">
+                <input type="checkbox" class="rounded border-slate-300 text-primary focus:ring-primary/20"/>
+                <span class="text-sm text-on-surface-variant font-medium">Pre-Order</span>
+              </label>
+              <label class="flex items-center gap-3 cursor-pointer">
+                <input type="checkbox" class="rounded border-slate-300 text-primary focus:ring-primary/20"/>
+                <span class="text-sm text-on-surface-variant font-medium">Limited Edition</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Clear filters -->
+        <button class="w-full glass-panel rounded-lg py-3 text-sm font-bold text-on-surface-variant hover:text-primary transition-colors border-white/40 flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-sm">restart_alt</span>
+          Clear all filters
+        </button>
+
+        <!-- Promo Card -->
+        <div class="mt-4 rounded-lg overflow-hidden relative h-44">
+          <img class="absolute inset-0 w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4HZrS5yb-swImdbVLPD3E7vOTc2IbOiFDWwNVdM7s9fO0F6Do1dcrqagqwXd2v4PUh4lAuRdl739Hr_a548HCW-gAxvPs_moSgjng6m6-GnVDkyDrZhIPnwq1udX5dNaQeucLIV5DV6h8n2j3emJt0AFFiEELDVnM3s8VsSiZf8H0PeOWpkDoWsPG5KnmYP146CxmZyvFVNBAsj1uX1llAH3Heg-ldLUVliNH-6rTLcgWbxdauyIjdjgo35glQvPCSHJ7RRpAjgYR"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 p-4">
+            <p class="text-white/70 text-[10px] uppercase tracking-widest font-bold mb-1">Special Offer</p>
+            <p class="text-white font-headline font-bold text-sm leading-tight">20% off<br/>Cyber Collection</p>
+            <button class="mt-2 text-[10px] font-bold text-primary bg-white/90 px-3 py-1 rounded-full hover:bg-white transition-colors">Shop Now</button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ── PRODUCT GRID ── -->
+      <div class="flex-1 min-w-0">
+
+        <!-- Toolbar -->
+        <div class="flex items-center justify-between mb-8 flex-wrap gap-4">
+          <div>
+            <p class="text-on-surface-variant text-sm">Showing <span class="font-bold text-on-surface">24</span> of <span class="font-bold text-on-surface">120</span> products</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <!-- View toggle -->
+            <div class="glass-panel rounded-md flex overflow-hidden border-white/40">
+              <button id="grid-btn" onclick="setView('grid')" class="px-3 py-2 bg-primary text-white transition-colors">
+                <span class="material-symbols-outlined text-lg">grid_view</span>
+              </button>
+              <button id="list-btn" onclick="setView('list')" class="px-3 py-2 text-on-surface-variant hover:bg-slate-100 transition-colors">
+                <span class="material-symbols-outlined text-lg">view_list</span>
+              </button>
+            </div>
+            <!-- Sort -->
+            <div class="glass-panel rounded-md border-white/40 overflow-hidden">
+              <select class="bg-transparent border-none text-sm font-semibold text-on-surface px-4 py-2 pr-8 focus:ring-0 focus:outline-none cursor-pointer appearance-none">
+                <option>Featured</option>
+                <option>Price: Low to High</option>
+                <option>Price: High to Low</option>
+                <option>Newest</option>
+                <option>Best Sellers</option>
+                <option>Top Rated</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Active filters -->
+        <div class="flex flex-wrap gap-2 mb-8" id="active-tags">
+          <span class="flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 text-primary rounded-full text-xs font-bold">
+            In Stock
+            <button class="hover:opacity-70"><span class="material-symbols-outlined text-xs">close</span></button>
+          </span>
+          <span class="flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 text-primary rounded-full text-xs font-bold">
+            Speed (Hard)
+            <button class="hover:opacity-70"><span class="material-symbols-outlined text-xs">close</span></button>
+          </span>
+          <span class="flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 text-primary rounded-full text-xs font-bold">
+            Control (Cloth)
+            <button class="hover:opacity-70"><span class="material-symbols-outlined text-xs">close</span></button>
+          </span>
+        </div>
+
+        <!-- ── Product Grid ── -->
+        <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 gap-6">
+
+          <!-- Card 1 -->
+          <div class="product-card group">
+            <div class="glass-panel rounded-lg p-2.5 aspect-[4/5] relative mb-4 overflow-hidden">
+              <img class="card-img w-full h-full object-cover rounded-md"
+                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuA71NXIy4CHvmQlA87VqJ6N8SBekSifHK-ViOorfeXyfD6Mbw55iPogWza_mmCXzQBtdH3NUyuF2DV4PWxPAkri0G809KCSdqOxfdmpF2AzgHbkGPYk2mxjBeoGEi8XxROiofl1wRPT8jvdtrC3_wXN7zqUAbcaDa3D_Hh9jXQ7g_aEttgLMSKx4H1r_9RQvjbefWvBWGhvQmbF3y4SBWq6KLNlNuHEOW_P92thFANu-WbES4KcffIwcr4GC99Ol2VJTKgxqrOwT8ud"
+                   alt="Mai - Street Fighter"/>
+              <span class="absolute top-4 left-4 badge-hot text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">HOT</span>
+              <button class="wish-btn absolute top-4 right-4 w-8 h-8 glass-panel rounded-full flex items-center justify-center text-on-surface-variant">
+                <span class="material-symbols-outlined text-base">favorite</span>
+              </button>
+              <div class="quick-add-overlay absolute bottom-0 left-0 right-0 p-3">
+                <button class="w-full bg-on-surface text-white py-2.5 rounded-md text-xs font-bold hover:bg-primary transition-colors flex items-center justify-center gap-2">
+                  <span class="material-symbols-outlined text-sm">add_shopping_cart</span>
+                  Quick Add
+                </button>
+              </div>
+            </div>
+            <div class="px-1">
+              <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-1">Artist Series</p>
+              <h3 class="font-headline font-bold text-base leading-snug mb-1">Mai – Street Fighter</h3>
+              <div class="flex items-center gap-1 mb-2">
+                <div class="flex text-amber-400">
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star_half</span>
+                </div>
+                <span class="text-[11px] text-on-surface-variant font-medium">(148)</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-lg font-bold text-primary">$45.00</span>
+                <button class="w-9 h-9 rounded-full glass-panel flex items-center justify-center hover:bg-primary hover:text-white transition-all border-white/40">
+                  <span class="material-symbols-outlined text-base">shopping_cart</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="product-card group">
+            <div class="glass-panel rounded-lg p-2.5 aspect-[4/5] relative mb-4 overflow-hidden">
+              <img class="card-img w-full h-full object-cover rounded-md"
+                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuATMWk0yAyo1KfwAfEZR-Xx3aCJC9N2B03UQbrMoJLZYfF_KE2rtWt6_bzeinzlpicx_qzl2qZGU7SFzn---olwwFLypMkCQRqE5PMk5s_FEDj60rITd5dgvMaDrulnxLLH_j_4gLkpvDp5wLNyltIh3ZzcJcuhc7bLgRDDkHySqCgvqfPWgG5n4OpuL8Ghq2Udsn3pqy_AU7RJTTYPu63bbEd-F0hP2v_Ir6Zf1bcwgIkbBly19rhIPoO7NcXppAbGDlvbS38uiKRq"
+                   alt="Shinobi Girl"/>
+              <button class="wish-btn absolute top-4 right-4 w-8 h-8 glass-panel rounded-full flex items-center justify-center text-on-surface-variant">
+                <span class="material-symbols-outlined text-base">favorite</span>
+              </button>
+              <div class="quick-add-overlay absolute bottom-0 left-0 right-0 p-3">
+                <button class="w-full bg-on-surface text-white py-2.5 rounded-md text-xs font-bold hover:bg-primary transition-colors flex items-center justify-center gap-2">
+                  <span class="material-symbols-outlined text-sm">add_shopping_cart</span>
+                  Quick Add
+                </button>
+              </div>
+            </div>
+            <div class="px-1">
+              <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-1">Midnight Edition</p>
+              <h3 class="font-headline font-bold text-base leading-snug mb-1">Shinobi Girl</h3>
+              <div class="flex items-center gap-1 mb-2">
+                <div class="flex text-amber-400">
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 0">star</span>
+                </div>
+                <span class="text-[11px] text-on-surface-variant font-medium">(92)</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-lg font-bold text-primary">$39.00</span>
+                <button class="w-9 h-9 rounded-full glass-panel flex items-center justify-center hover:bg-primary hover:text-white transition-all border-white/40">
+                  <span class="material-symbols-outlined text-base">shopping_cart</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="product-card group">
+            <div class="glass-panel rounded-lg p-2.5 aspect-[4/5] relative mb-4 overflow-hidden">
+              <img class="card-img w-full h-full object-cover rounded-md"
+                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4HZrS5yb-swImdbVLPD3E7vOTc2IbOiFDWwNVdM7s9fO0F6Do1dcrqagqwXd2v4PUh4lAuRdl739Hr_a548HCW-gAxvPs_moSgjng6m6-GnVDkyDrZhIPnwq1udX5dNaQeucLIV5DV6h8n2j3emJt0AFFiEELDVnM3s8VsSiZf8H0PeOWpkDoWsPG5KnmYP146CxmZyvFVNBAsj1uX1llAH3Heg-ldLUVliNH-6rTLcgWbxdauyIjdjgo35glQvPCSHJ7RRpAjgYR"
+                   alt="Neo Tokyo"/>
+              <span class="absolute top-4 left-4 badge-sale text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">−20%</span>
+              <button class="wish-btn absolute top-4 right-4 w-8 h-8 glass-panel rounded-full flex items-center justify-center text-on-surface-variant">
+                <span class="material-symbols-outlined text-base">favorite</span>
+              </button>
+              <div class="quick-add-overlay absolute bottom-0 left-0 right-0 p-3">
+                <button class="w-full bg-on-surface text-white py-2.5 rounded-md text-xs font-bold hover:bg-primary transition-colors flex items-center justify-center gap-2">
+                  <span class="material-symbols-outlined text-sm">add_shopping_cart</span>
+                  Quick Add
+                </button>
+              </div>
+            </div>
+            <div class="px-1">
+              <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-1">Cyber Collection</p>
+              <h3 class="font-headline font-bold text-base leading-snug mb-1">Neo Tokyo</h3>
+              <div class="flex items-center gap-1 mb-2">
+                <div class="flex text-amber-400">
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+                </div>
+                <span class="text-[11px] text-on-surface-variant font-medium">(207)</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <div>
+                  <span class="text-lg font-bold text-primary">$39.20</span>
+                  <span class="text-xs text-on-surface-variant line-through ml-1.5">$49.00</span>
+                </div>
+                <button class="w-9 h-9 rounded-full glass-panel flex items-center justify-center hover:bg-primary hover:text-white transition-all border-white/40">
+                  <span class="material-symbols-outlined text-base">shopping_cart</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="product-card group">
+            <div class="glass-panel rounded-lg p-2.5 aspect-[4/5] relative mb-4 overflow-hidden">
+              <img class="card-img w-full h-full object-cover rounded-md"
+                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5eTtJyEW3_Oh0fDJG6c4mcDB6onC956wL8iTauBhqKYYED7hCgQso9D1INyjLf_d1Vopck65rnG6Vtyw8wWWQ_nmyOcnpoxTF0T12sXBjoH-POYsGhJ5B6n7PxncqHUQiqk4t-oifgfOh0EtuHZxH4_SOyk54Ax1SU0DBq2yzd9gqMjkFWPuF9uLS-Pmw9mbbfNkE0-ZGUuz9FlLluIIB_TX0phJ8WOwB0b6jpDEwaARnpE6HiEig3abaZcxeSba8_U82iYr23byX"
+                   alt="Royal Ink"/>
+              <span class="absolute top-4 left-4 badge-new text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">NEW</span>
+              <button class="wish-btn absolute top-4 right-4 w-8 h-8 glass-panel rounded-full flex items-center justify-center text-on-surface-variant">
+                <span class="material-symbols-outlined text-base">favorite</span>
+              </button>
+              <div class="quick-add-overlay absolute bottom-0 left-0 right-0 p-3">
+                <button class="w-full bg-on-surface text-white py-2.5 rounded-md text-xs font-bold hover:bg-primary transition-colors flex items-center justify-center gap-2">
+                  <span class="material-symbols-outlined text-sm">add_shopping_cart</span>
+                  Quick Add
+                </button>
+              </div>
+            </div>
+            <div class="px-1">
+              <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-1">Premium Fluidity</p>
+              <h3 class="font-headline font-bold text-base leading-snug mb-1">Royal Ink</h3>
+              <div class="flex items-center gap-1 mb-2">
+                <div class="flex text-amber-400">
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star_half</span>
+                </div>
+                <span class="text-[11px] text-on-surface-variant font-medium">(61)</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-lg font-bold text-primary">$55.00</span>
+                <button class="w-9 h-9 rounded-full glass-panel flex items-center justify-center hover:bg-primary hover:text-white transition-all border-white/40">
+                  <span class="material-symbols-outlined text-base">shopping_cart</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 5 -->
+          <div class="product-card group">
+            <div class="glass-panel rounded-lg p-2.5 aspect-[4/5] relative mb-4 overflow-hidden">
+              <img class="card-img w-full h-full object-cover rounded-md"
+                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtqfFhJCsORQFeQpECEUcbVfo1tvlm7iGMRi-m3ihuPpp6_UNUiaXCZ_LzCVzq7DnrTOHWvKbjoOIDWOXjwWX29v6nlAkRDWWJztttNsMduh5SgH1r9Z5xz66Mxv7peSWNHl0DOY1SDf0fQXzq3qOGi_woSJaLrzeznrkUt57guugpK2aQpW5KR2Nl1J0iT-M9ioSmLhnAPqjP0ZPTIfVk6vDbMvId3tECFk0yHBudv1AW7kugknV2U0z84JwVYJjiB7BlV0tVdYAk"
+                   alt="Sakura Drift"/>
+              <button class="wish-btn absolute top-4 right-4 w-8 h-8 glass-panel rounded-full flex items-center justify-center text-on-surface-variant">
+                <span class="material-symbols-outlined text-base">favorite</span>
+              </button>
+              <div class="quick-add-overlay absolute bottom-0 left-0 right-0 p-3">
+                <button class="w-full bg-on-surface text-white py-2.5 rounded-md text-xs font-bold hover:bg-primary transition-colors flex items-center justify-center gap-2">
+                  <span class="material-symbols-outlined text-sm">add_shopping_cart</span>
+                  Quick Add
+                </button>
+              </div>
+            </div>
+            <div class="px-1">
+              <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-1">Artist Series</p>
+              <h3 class="font-headline font-bold text-base leading-snug mb-1">Sakura Drift</h3>
+              <div class="flex items-center gap-1 mb-2">
+                <div class="flex text-amber-400">
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 0">star</span>
+                </div>
+                <span class="text-[11px] text-on-surface-variant font-medium">(83)</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-lg font-bold text-primary">$42.00</span>
+                <button class="w-9 h-9 rounded-full glass-panel flex items-center justify-center hover:bg-primary hover:text-white transition-all border-white/40">
+                  <span class="material-symbols-outlined text-base">shopping_cart</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 6 -->
+          <div class="product-card group">
+            <div class="glass-panel rounded-lg p-2.5 aspect-[4/5] relative mb-4 overflow-hidden">
+              <img class="card-img w-full h-full object-cover rounded-md"
+                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgvoMAOHwsrfg1KVJQCn5NTZ57YYUuGWHlToCv3K5DZ4hUMovQ0I4uoagRLGRJ5uYhOFyU4sO__tDSq7MFpd6tqXokvT6N_6rPkaWQ-J_irD84qL6VK8gXPsQHltrOBgXrsgU0u-dCbE5zYMo-msKCTOiy9EnYRTcKYtrtykmNhwMvdX9mcwLnS8SRAe3F9ItmCisfXIKmfZIvQQKzhlf9FbKaSYVp2Scvs20o4Azfk3tDEuexQePKYaM4-1O_3s5VDIIOCZSlgp78"
+                   alt="Void Wanderer"/>
+              <span class="absolute top-4 left-4 badge-hot text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">HOT</span>
+              <button class="wish-btn absolute top-4 right-4 w-8 h-8 glass-panel rounded-full flex items-center justify-center text-on-surface-variant">
+                <span class="material-symbols-outlined text-base">favorite</span>
+              </button>
+              <div class="quick-add-overlay absolute bottom-0 left-0 right-0 p-3">
+                <button class="w-full bg-on-surface text-white py-2.5 rounded-md text-xs font-bold hover:bg-primary transition-colors flex items-center justify-center gap-2">
+                  <span class="material-symbols-outlined text-sm">add_shopping_cart</span>
+                  Quick Add
+                </button>
+              </div>
+            </div>
+            <div class="px-1">
+              <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-1">Cyber Collection</p>
+              <h3 class="font-headline font-bold text-base leading-snug mb-1">Void Wanderer</h3>
+              <div class="flex items-center gap-1 mb-2">
+                <div class="flex text-amber-400">
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+                </div>
+                <span class="text-[11px] text-on-surface-variant font-medium">(319)</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-lg font-bold text-primary">$47.00</span>
+                <button class="w-9 h-9 rounded-full glass-panel flex items-center justify-center hover:bg-primary hover:text-white transition-all border-white/40">
+                  <span class="material-symbols-outlined text-base">shopping_cart</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 7 -->
+          <div class="product-card group">
+            <div class="glass-panel rounded-lg p-2.5 aspect-[4/5] relative mb-4 overflow-hidden">
+              <img class="card-img w-full h-full object-cover rounded-md"
+                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlH0MI83wW4wSViT3fEiWSRqUxDy2gRk9Tn8Pf-5r0nYJpONuoLOiw4RNa0ElDZgQ2rVQ8Mo82bnJIccXnd9sLbpxy0-IOOXiUsUq9_uBmEOESbWjkRseG7RPQcNHtDpdReHqVR2r0QcOZIOQzOWmk3JoukpxeVfIJ840-8r4-oJwbbisEgiFYhz1OkdlqRI8FmYv2T-brCm55stjLOqpLVj8nEzc71fROFCqsWjwD4GOoOhBjsv4IBA64zDJew2TIFAtS6TK5pO9z"
+                   alt="Eclipse X"/>
+              <span class="absolute top-4 left-4 badge-new text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">NEW</span>
+              <button class="wish-btn absolute top-4 right-4 w-8 h-8 glass-panel rounded-full flex items-center justify-center text-on-surface-variant">
+                <span class="material-symbols-outlined text-base">favorite</span>
+              </button>
+              <div class="quick-add-overlay absolute bottom-0 left-0 right-0 p-3">
+                <button class="w-full bg-on-surface text-white py-2.5 rounded-md text-xs font-bold hover:bg-primary transition-colors flex items-center justify-center gap-2">
+                  <span class="material-symbols-outlined text-sm">add_shopping_cart</span>
+                  Quick Add
+                </button>
+              </div>
+            </div>
+            <div class="px-1">
+              <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-1">Midnight Edition</p>
+              <h3 class="font-headline font-bold text-base leading-snug mb-1">Eclipse X</h3>
+              <div class="flex items-center gap-1 mb-2">
+                <div class="flex text-amber-400">
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 0">star</span>
+                </div>
+                <span class="text-[11px] text-on-surface-variant font-medium">(44)</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-lg font-bold text-primary">$51.00</span>
+                <button class="w-9 h-9 rounded-full glass-panel flex items-center justify-center hover:bg-primary hover:text-white transition-all border-white/40">
+                  <span class="material-symbols-outlined text-base">shopping_cart</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 8 -->
+          <div class="product-card group">
+            <div class="glass-panel rounded-lg p-2.5 aspect-[4/5] relative mb-4 overflow-hidden">
+              <img class="card-img w-full h-full object-cover rounded-md"
+                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFUaiFAznf6R5qC3gVzIf0nIMCLzlkuDB4gpb1KuyCo0FXh0A8oijbgto75XXYvlovJykCwqy69tWFTTW67KfHkIs2C7ZtLc9Z2NT2WckqvD9CpbRDBimM5DSWZNMglNnp1O32D_dBgWSulz1sbB9_2t0_LV8nvlWkFVZz3HGJ6FPy_GrdtStvcbaKwPQC6izUKuwvhyuMjqvcHJi6uED8AUkY3j_bxkGC_zmuHjyK0IvZEYyaaIdhGnLeL5w9VapIcMDy3eBeSwkw"
+                   alt="Storm Breaker"/>
+              <span class="absolute top-4 left-4 badge-sale text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">−15%</span>
+              <button class="wish-btn absolute top-4 right-4 w-8 h-8 glass-panel rounded-full flex items-center justify-center text-on-surface-variant">
+                <span class="material-symbols-outlined text-base">favorite</span>
+              </button>
+              <div class="quick-add-overlay absolute bottom-0 left-0 right-0 p-3">
+                <button class="w-full bg-on-surface text-white py-2.5 rounded-md text-xs font-bold hover:bg-primary transition-colors flex items-center justify-center gap-2">
+                  <span class="material-symbols-outlined text-sm">add_shopping_cart</span>
+                  Quick Add
+                </button>
+              </div>
+            </div>
+            <div class="px-1">
+              <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-1">Premium Fluidity</p>
+              <h3 class="font-headline font-bold text-base leading-snug mb-1">Storm Breaker</h3>
+              <div class="flex items-center gap-1 mb-2">
+                <div class="flex text-amber-400">
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star_half</span>
+                </div>
+                <span class="text-[11px] text-on-surface-variant font-medium">(176)</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <div>
+                  <span class="text-lg font-bold text-primary">$46.75</span>
+                  <span class="text-xs text-on-surface-variant line-through ml-1.5">$55.00</span>
+                </div>
+                <button class="w-9 h-9 rounded-full glass-panel flex items-center justify-center hover:bg-primary hover:text-white transition-all border-white/40">
+                  <span class="material-symbols-outlined text-base">shopping_cart</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 9 -->
+          <div class="product-card group">
+            <div class="glass-panel rounded-lg p-2.5 aspect-[4/5] relative mb-4 overflow-hidden">
+              <img class="card-img w-full h-full object-cover rounded-md"
+                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAc6gQrMooMBPcQkBaJeJThuXuQvJDpfZMYZrcQ4Yh0RJp1Uj3ZhiK5kVb0V8DTMMZ5ywZjQaNAC59HcV6rs2DkBWAkls4uQmOyLFC8U_B5DbT4lR5to8ON0Tvpd-r0cEIR6jGP6qa_uy4feUl1GjlJ8O59Fh-D7B26VB4x414-hu-5KyMxbb4HYHxb3y9CKEdvXqTEOd_7us3OP3lpM_GlXvgTZ4eZnzxewF44BeDRWpc7mXpxChWF1RXn-0PaJt8XZPGk55GsCj-"
+                   alt="Lunar Phase"/>
+              <button class="wish-btn absolute top-4 right-4 w-8 h-8 glass-panel rounded-full flex items-center justify-center text-on-surface-variant">
+                <span class="material-symbols-outlined text-base">favorite</span>
+              </button>
+              <div class="quick-add-overlay absolute bottom-0 left-0 right-0 p-3">
+                <button class="w-full bg-on-surface text-white py-2.5 rounded-md text-xs font-bold hover:bg-primary transition-colors flex items-center justify-center gap-2">
+                  <span class="material-symbols-outlined text-sm">add_shopping_cart</span>
+                  Quick Add
+                </button>
+              </div>
+            </div>
+            <div class="px-1">
+              <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-1">Artist Series</p>
+              <h3 class="font-headline font-bold text-base leading-snug mb-1">Lunar Phase</h3>
+              <div class="flex items-center gap-1 mb-2">
+                <div class="flex text-amber-400">
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+                  <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+                </div>
+                <span class="text-[11px] text-on-surface-variant font-medium">(253)</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-lg font-bold text-primary">$44.00</span>
+                <button class="w-9 h-9 rounded-full glass-panel flex items-center justify-center hover:bg-primary hover:text-white transition-all border-white/40">
+                  <span class="material-symbols-outlined text-base">shopping_cart</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /grid -->
+
+        <!-- Load More / Pagination -->
+        <div class="mt-16 flex flex-col items-center gap-6">
+          <!-- Pagination -->
+          <div class="flex items-center gap-2">
+            <button class="page-btn w-10 h-10 rounded-full glass-panel flex items-center justify-center text-on-surface-variant hover:text-primary border-white/40">
+              <span class="material-symbols-outlined text-lg">chevron_left</span>
+            </button>
+            <button class="page-btn active w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold">1</button>
+            <button class="page-btn w-10 h-10 rounded-full glass-panel flex items-center justify-center text-sm font-semibold text-on-surface-variant border-white/40">2</button>
+            <button class="page-btn w-10 h-10 rounded-full glass-panel flex items-center justify-center text-sm font-semibold text-on-surface-variant border-white/40">3</button>
+            <span class="w-10 h-10 flex items-center justify-center text-on-surface-variant text-sm font-medium">…</span>
+            <button class="page-btn w-10 h-10 rounded-full glass-panel flex items-center justify-center text-sm font-semibold text-on-surface-variant border-white/40">10</button>
+            <button class="page-btn w-10 h-10 rounded-full glass-panel flex items-center justify-center text-on-surface-variant hover:text-primary border-white/40">
+              <span class="material-symbols-outlined text-lg">chevron_right</span>
+            </button>
+          </div>
+          <!-- Load more -->
+          <button class="liquid-glass text-on-surface px-10 py-3.5 rounded-md font-headline font-bold text-sm hover:translate-y-[-2px] transition-all border-white/40 flex items-center gap-2">
+            <span class="material-symbols-outlined text-lg">expand_more</span>
+            Load More Products
+          </button>
+        </div>
+
+      </div><!-- /product area -->
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     CUSTOM LAB BANNER
+══════════════════════════════════════ -->
+<section class="py-24 bg-surface-variant/30">
+  <div class="section-container">
+    <div class="relative h-56 rounded-lg overflow-hidden flex items-center px-10 md:px-16">
+      <img class="absolute inset-0 w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOOFti_01wJup5z6oRoevG11CPYh0IdUuInqxC89RtXGeuvWSthQZvleR4FiKk1vm4zZPJ4Bp-38tryO0MIQ5e8IEg7RZYta6Rs93hzjLsTgVuxI1CHKvc17Nj-45iLvVDZnkqgsZtHf1HRFyiFx0KNHqt2IiSGoYFv5MhnCuSYc9nJQbANaKX8izHBrf5Zn8XlE9mhXkP1x4BkEtIjb7pH6gJJEgeBTjNXdoDesptoY7-xSmQE9rRT5nfZtImotvvXhOIuVyyIhA5"/>
+      <div class="absolute inset-0 bg-black/50 backdrop-blur-[2px]"></div>
+      <div class="relative z-10 flex-1">
+        <p class="text-white/60 text-[10px] uppercase tracking-[0.3em] font-bold mb-2">Can't find what you're looking for?</p>
+        <h2 class="font-headline text-2xl md:text-3xl font-bold text-white leading-tight">Design your own mousepad in minutes.</h2>
+      </div>
+      <div class="relative z-10 ml-auto hidden md:flex items-center gap-4">
+        <button class="liquid-glass text-white px-8 py-3.5 rounded-md font-headline font-bold text-sm hover:translate-y-[-2px] transition-all border-white/30 flex items-center gap-2">
+          <span class="material-symbols-outlined">brush</span>
+          Open Custom Lab
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     FOOTER  (identical to index)
+══════════════════════════════════════ -->
+<footer class="bg-slate-50 border-t border-slate-200 pt-24 pb-12">
+  <div class="section-container">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-24">
+      <div class="col-span-1 md:col-span-2">
+        <img alt="MINIMALIST" class="h-8 w-auto mb-8"
+             src="https://lh3.googleusercontent.com/aida/ADBb0ujANZWsyTXcsDClfZ0C-f0gZA3uWj4qqTp_8ZZ-a4YoTYLlERVKCvGxzu6FFWkB7i4XoFucqSm9BF_DAYzwnRomSyiwVmhyXqvzZK1J6X0B5CIN-gzSoy5ob5LXhItsXHnbDQyqcyBIwz1b5lZIvdbSavZSkDTW6YFLB6mQBEWo44jY_wKeyG7TmeZL89YTqOgklpYp3O8UoKeAU0b5iU8i6Cug6oUpkNpuhPRChzQ_iCAVCgoHo3irkphR2I5HcYYPEaAwlZzAWr4"/>
+        <p class="text-on-surface-variant max-w-sm mb-8 leading-relaxed text-lg">Redefining the digital desktop through premium materials and uncompromising design philosophy. Your gear should be as beautiful as the games you play.</p>
+        <div class="flex gap-4">
+          <a class="w-10 h-10 rounded-full glass-panel flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors" href="#">
+            <span class="material-symbols-outlined text-lg">public</span>
+          </a>
+          <a class="w-10 h-10 rounded-full glass-panel flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors" href="#">
+            <span class="material-symbols-outlined text-lg">alternate_email</span>
+          </a>
+          <a class="w-10 h-10 rounded-full glass-panel flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors" href="#">
+            <span class="material-symbols-outlined text-lg">rss_feed</span>
+          </a>
+        </div>
+      </div>
+      <div>
+        <h5 class="font-headline font-bold mb-8 text-xl">Explore</h5>
+        <ul class="space-y-4">
+          <li><a class="text-on-surface-variant hover:text-primary transition-colors text-base" href="#">New Arrivals</a></li>
+          <li><a class="text-on-surface-variant hover:text-primary transition-colors text-base" href="#">Artist Series</a></li>
+          <li><a class="text-on-surface-variant hover:text-primary transition-colors text-base" href="#">Custom Lab</a></li>
+          <li><a class="text-on-surface-variant hover:text-primary transition-colors text-base" href="#">Gift Cards</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5 class="font-headline font-bold mb-8 text-xl">Support</h5>
+        <ul class="space-y-4">
+          <li><a class="text-on-surface-variant hover:text-primary transition-colors text-base" href="#">Shipping Policy</a></li>
+          <li><a class="text-on-surface-variant hover:text-primary transition-colors text-base" href="#">Care Guide</a></li>
+          <li><a class="text-on-surface-variant hover:text-primary transition-colors text-base" href="#">Contact Us</a></li>
+          <li><a class="text-on-surface-variant hover:text-primary transition-colors text-base" href="#">Help Center</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="flex flex-col md:flex-row justify-between items-center pt-12 border-t border-slate-200 gap-6">
+      <p class="text-on-surface-variant text-sm">© 2025 Minimalist Gaming. All rights reserved.</p>
+      <div class="flex gap-8">
+        <a class="text-on-surface-variant hover:text-primary text-sm transition-colors" href="#">Privacy Policy</a>
+        <a class="text-on-surface-variant hover:text-primary text-sm transition-colors" href="#">Terms of Service</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ── Category pill active state ──
+  function setActive(el) {
+    document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // ── Grid / List view toggle ──
+  function setView(mode) {
+    const grid = document.getElementById('product-grid');
+    const gb = document.getElementById('grid-btn');
+    const lb = document.getElementById('list-btn');
+    if (mode === 'grid') {
+      grid.className = 'grid grid-cols-2 md:grid-cols-3 gap-6';
+      gb.classList.add('bg-primary','text-white');
+      gb.classList.remove('text-on-surface-variant','hover:bg-slate-100');
+      lb.classList.remove('bg-primary','text-white');
+      lb.classList.add('text-on-surface-variant','hover:bg-slate-100');
+    } else {
+      grid.className = 'flex flex-col gap-5';
+      lb.classList.add('bg-primary','text-white');
+      lb.classList.remove('text-on-surface-variant','hover:bg-slate-100');
+      gb.classList.remove('bg-primary','text-white');
+      gb.classList.add('text-on-surface-variant','hover:bg-slate-100');
+      // Flatten cards in list mode
+      document.querySelectorAll('.product-card').forEach(card => {
+        card.classList.add('flex','gap-6','items-center');
+        const imgWrap = card.querySelector('.glass-panel');
+        if(imgWrap) { imgWrap.style.width='160px'; imgWrap.style.flex='0 0 160px'; imgWrap.style.aspectRatio='1/1'; }
+      });
+    }
+  }
+
+  // ── Wishlist toggle ──
+  document.querySelectorAll('.wish-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const icon = btn.querySelector('.material-symbols-outlined');
+      const filled = icon.style.fontVariationSettings === "'FILL' 1";
+      icon.style.fontVariationSettings = filled ? "'FILL' 0" : "'FILL' 1";
+      btn.style.color = filled ? '' : '#ef4444';
+    });
+  });
+
+  // ── Page switcher ──
+  document.querySelectorAll('.page-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if(btn.querySelector('.material-symbols-outlined')) return;
+      document.querySelectorAll('.page-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  // ── Active filter tag dismiss ──
+  document.querySelectorAll('#active-tags button').forEach(btn => {
+    btn.addEventListener('click', () => btn.closest('span').remove());
+  });
+</script>
+</body>
+</html>

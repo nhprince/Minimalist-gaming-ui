@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mai – Street Fighter | MINIMALIST Gaming</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#4f46e5",
+          "on-primary": "#ffffff",
+          "surface": "#fbfcfe",
+          "on-surface": "#0f172a",
+          "surface-variant": "#f1f5f9",
+          "on-surface-variant": "#64748b",
+          "outline-variant": "#e2e8f0"
+        },
+        fontFamily: {
+          "headline": ["Outfit", "sans-serif"],
+          "body":    ["Outfit", "sans-serif"]
+        },
+        borderRadius: {
+          "md": "16px",
+          "lg": "24px",
+          "xl": "32px",
+          "2xl": "48px"
+        },
+        spacing: {
+          "6":  "24px",
+          "12": "48px",
+          "24": "96px"
+        }
+      }
+    }
+  }
+</script>
+<style>
+  .glass-panel {
+    background: rgba(255,255,255,0.10);
+    backdrop-filter: blur(64px) saturate(150%);
+    -webkit-backdrop-filter: blur(64px) saturate(150%);
+    border: 1px solid rgba(255,255,255,0.15);
+    box-shadow: inset 1px 1px 0 0 rgba(255,255,255,0.5), 0 4px 24px rgba(0,0,0,0.04);
+  }
+  .liquid-glass {
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(100px) saturate(200%);
+    -webkit-backdrop-filter: blur(100px) saturate(200%);
+    border: 1px solid rgba(255,255,255,0.3);
+    box-shadow: inset 1.5px 1.5px 0 0 rgba(255,255,255,0.7), 0 12px 40px 0 rgba(31,38,135,0.08);
+    position: relative; overflow: hidden;
+  }
+  .liquid-glass::before {
+    content:''; position:absolute; top:-50%; left:-50%;
+    width:200%; height:200%;
+    background:linear-gradient(45deg,transparent,rgba(255,255,255,0.15),transparent);
+    transform:rotate(45deg); pointer-events:none;
+    animation:shine 8s infinite linear;
+  }
+  @keyframes shine {
+    0%   { transform:translateX(-100%) rotate(45deg); }
+    100% { transform:translateX(100%) rotate(45deg); }
+  }
+  .section-container { max-width:1200px; margin-left:auto; margin-right:auto; padding-left:24px; padding-right:24px; }
+  ::-webkit-scrollbar { width:5px; }
+  ::-webkit-scrollbar-track { background:transparent; }
+  ::-webkit-scrollbar-thumb { background:#e2e8f0; border-radius:99px; }
+  .thumb { cursor:pointer; transition:border-color .2s; }
+  .thumb.active { border-color:#4f46e5 !important; }
+  .thumb:hover  { border-color:#4f46e5 !important; }
+  #main-image { transition:opacity .25s ease; }
+  .size-opt { transition:all .2s; cursor:pointer; }
+  .size-opt.active { background:#4f46e5; color:#fff; border-color:#4f46e5; }
+  .size-opt:hover:not(.active) { border-color:#4f46e5; color:#4f46e5; }
+  .qty-btn { transition:all .2s; }
+  .qty-btn:hover { background:#4f46e5; color:#fff; }
+  .wish-btn { transition:color .2s, transform .2s; }
+  .wish-btn:hover { color:#ef4444; transform:scale(1.15); }
+  .acc-content { max-height:0; overflow:hidden; transition:max-height .3s ease; }
+  .acc-content.open { max-height:400px; }
+  .acc-icon { transition:transform .3s ease; }
+  .acc-open .acc-icon { transform:rotate(180deg); }
+  .related-card { transition:transform .3s ease; }
+  .related-card:hover { transform:translateY(-4px); }
+  .related-card:hover .related-img { transform:scale(1.06); }
+  .related-img { transition:transform .6s ease; }
+  .badge-hot  { background:#ef4444; color:#fff; }
+  .badge-new  { background:#4f46e5; color:#fff; }
+  .badge-sale { background:#f59e0b; color:#fff; }
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(18px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  .fade-up { animation:fadeUp .45s ease both; }
+  .delay-1 { animation-delay:.08s; }
+  .delay-2 { animation-delay:.16s; }
+</style>
+</head>
+<body class="bg-white font-body text-on-surface antialiased">
+
+<!-- NAV -->
+<nav class="fixed top-0 left-0 right-0 z-50 pt-6">
+  <div class="max-w-full px-8 md:px-12">
+    <div class="glass-panel h-16 rounded-md px-6 flex items-center justify-between shadow-sm border-white/40">
+      <div class="flex items-center gap-16">
+        <img alt="MINIMALIST" class="h-8 w-auto object-contain"
+             src="https://lh3.googleusercontent.com/aida/ADBb0ujANZWsyTXcsDClfZ0C-f0gZA3uWj4qqTp_8ZZ-a4YoTYLlERVKCvGxzu6FFWkB7i4XoFucqSm9BF_DAYzwnRomSyiwVmhyXqvzZK1J6X0B5CIN-gzSoy5ob5LXhItsXHnbDQyqcyBIwz1b5lZIvdbSavZSkDTW6YFLB6mQBEWo44jY_wKeyG7TmeZL89YTqOgklpYp3O8UoKeAU0b5iU8i6Cug6oUpkNpuhPRChzQ_iCAVCgoHo3irkphR2I5HcYYPEaAwlZzAWr4"/>
+        <div class="hidden lg:flex items-center gap-10">
+          <a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Home</a>
+          <a class="text-primary font-semibold text-sm" href="shop.html">Store</a>
+          <a class="text-on-surface-variant hover:text-primary transition-colors text-sm whitespace-nowrap" href="#">Design Your Mousepad</a>
+          <a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Merchandise</a>
+          <a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Community</a>
+          <a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Contact</a>
+        </div>
+      </div>
+      <div class="flex items-center gap-8 ml-auto">
+        <div class="relative hidden md:block">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg">search</span>
+          <input class="bg-white/20 border-none rounded-full pl-10 pr-4 py-1.5 text-sm w-48 focus:ring-1 focus:ring-primary/20 backdrop-blur-md" placeholder="Search..." type="text"/>
+        </div>
+        <button class="relative flex items-center justify-center">
+          <span class="material-symbols-outlined text-on-surface-variant">shopping_cart</span>
+          <span class="absolute -top-1.5 -right-1.5 w-4 h-4 bg-primary text-white text-[9px] font-bold rounded-full flex items-center justify-center">3</span>
+        </button>
+        <button class="bg-primary text-white px-6 py-2.5 rounded-md font-headline font-bold text-sm shadow-sm hover:shadow-md transition-all active:scale-95">Sign up</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- BREADCRUMB -->
+<div class="pt-32 pb-0">
+  <div class="section-container">
+    <nav class="flex items-center gap-2 text-xs font-medium text-on-surface-variant">
+      <a href="#" class="hover:text-primary transition-colors">Home</a>
+      <span class="material-symbols-outlined text-sm">chevron_right</span>
+      <a href="shop.html" class="hover:text-primary transition-colors">Store</a>
+      <span class="material-symbols-outlined text-sm">chevron_right</span>
+      <a href="#" class="hover:text-primary transition-colors">Artist Series</a>
+      <span class="material-symbols-outlined text-sm">chevron_right</span>
+      <span class="text-on-surface font-semibold">Mai – Street Fighter</span>
+    </nav>
+  </div>
+</div>
+
+<!-- PRODUCT -->
+<section class="py-12">
+  <div class="section-container">
+    <div class="grid lg:grid-cols-2 gap-16 items-start">
+
+      <!-- Gallery -->
+      <div class="flex gap-4 fade-up">
+        <div class="flex flex-col gap-3 flex-shrink-0">
+          <div onclick="setImg(this,'https://lh3.googleusercontent.com/aida-public/AB6AXuA71NXIy4CHvmQlA87VqJ6N8SBekSifHK-ViOorfeXyfD6Mbw55iPogWza_mmCXzQBtdH3NUyuF2DV4PWxPAkri0G809KCSdqOxfdmpF2AzgHbkGPYk2mxjBeoGEi8XxROiofl1wRPT8jvdtrC3_wXN7zqUAbcaDa3D_Hh9jXQ7g_aEttgLMSKx4H1r_9RQvjbefWvBWGhvQmbF3y4SBWq6KLNlNuHEOW_P92thFANu-WbES4KcffIwcr4GC99Ol2VJTKgxqrOwT8ud')" class="thumb active w-16 h-16 glass-panel rounded-lg overflow-hidden border-2 border-primary">
+            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuA71NXIy4CHvmQlA87VqJ6N8SBekSifHK-ViOorfeXyfD6Mbw55iPogWza_mmCXzQBtdH3NUyuF2DV4PWxPAkri0G809KCSdqOxfdmpF2AzgHbkGPYk2mxjBeoGEi8XxROiofl1wRPT8jvdtrC3_wXN7zqUAbcaDa3D_Hh9jXQ7g_aEttgLMSKx4H1r_9RQvjbefWvBWGhvQmbF3y4SBWq6KLNlNuHEOW_P92thFANu-WbES4KcffIwcr4GC99Ol2VJTKgxqrOwT8ud" class="w-full h-full object-cover"/></div>
+          <div onclick="setImg(this,'https://lh3.googleusercontent.com/aida-public/AB6AXuDtqfFhJCsORQFeQpECEUcbVfo1tvlm7iGMRi-m3ihuPpp6_UNUiaXCZ_LzCVzq7DnrTOHWvKbjoOIDWOXjwWX29v6nlAkRDWWJztttNsMduh5SgH1r9Z5xz66Mxv7peSWNHl0DOY1SDf0fQXzq3qOGi_woSJaLrzeznrkUt57guugpK2aQpW5KR2Nl1J0iT-M9ioSmLhnAPqjP0ZPTIfVk6vDbMvId3tECFk0yHBudv1AW7kugknV2U0z84JwVYJjiB7BlV0tVdYAk')" class="thumb w-16 h-16 glass-panel rounded-lg overflow-hidden border-2 border-transparent">
+            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtqfFhJCsORQFeQpECEUcbVfo1tvlm7iGMRi-m3ihuPpp6_UNUiaXCZ_LzCVzq7DnrTOHWvKbjoOIDWOXjwWX29v6nlAkRDWWJztttNsMduh5SgH1r9Z5xz66Mxv7peSWNHl0DOY1SDf0fQXzq3qOGi_woSJaLrzeznrkUt57guugpK2aQpW5KR2Nl1J0iT-M9ioSmLhnAPqjP0ZPTIfVk6vDbMvId3tECFk0yHBudv1AW7kugknV2U0z84JwVYJjiB7BlV0tVdYAk" class="w-full h-full object-cover"/></div>
+          <div onclick="setImg(this,'https://lh3.googleusercontent.com/aida-public/AB6AXuDgvoMAOHwsrfg1KVJQCn5NTZ57YYUuGWHlToCv3K5DZ4hUMovQ0I4uoagRLGRJ5uYhOFyU4sO__tDSq7MFpd6tqXokvT6N_6rPkaWQ-J_irD84qL6VK8gXPsQHltrOBgXrsgU0u-dCbE5zYMo-msKCTOiy9EnYRTcKYtrtykmNhwMvdX9mcwLnS8SRAe3F9ItmCisfXIKmfZIvQQKzhlf9FbKaSYVp2Scvs20o4Azfk3tDEuexQePKYaM4-1O_3s5VDIIOCZSlgp78')" class="thumb w-16 h-16 glass-panel rounded-lg overflow-hidden border-2 border-transparent">
+            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgvoMAOHwsrfg1KVJQCn5NTZ57YYUuGWHlToCv3K5DZ4hUMovQ0I4uoagRLGRJ5uYhOFyU4sO__tDSq7MFpd6tqXokvT6N_6rPkaWQ-J_irD84qL6VK8gXPsQHltrOBgXrsgU0u-dCbE5zYMo-msKCTOiy9EnYRTcKYtrtykmNhwMvdX9mcwLnS8SRAe3F9ItmCisfXIKmfZIvQQKzhlf9FbKaSYVp2Scvs20o4Azfk3tDEuexQePKYaM4-1O_3s5VDIIOCZSlgp78" class="w-full h-full object-cover"/></div>
+          <div onclick="setImg(this,'https://lh3.googleusercontent.com/aida-public/AB6AXuC5eTtJyEW3_Oh0fDJG6c4mcDB6onC956wL8iTauBhqKYYED7hCgQso9D1INyjLf_d1Vopck65rnG6Vtyw8wWWQ_nmyOcnpoxTF0T12sXBjoH-POYsGhJ5B6n7PxncqHUQiqk4t-oifgfOh0EtuHZxH4_SOyk54Ax1SU0DBq2yzd9gqMjkFWPuF9uLS-Pmw9mbbfNkE0-ZGUuz9FlLluIIB_TX0phJ8WOwB0b6jpDEwaARnpE6HiEig3abaZcxeSba8_U82iYr23byX')" class="thumb w-16 h-16 glass-panel rounded-lg overflow-hidden border-2 border-transparent">
+            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5eTtJyEW3_Oh0fDJG6c4mcDB6onC956wL8iTauBhqKYYED7hCgQso9D1INyjLf_d1Vopck65rnG6Vtyw8wWWQ_nmyOcnpoxTF0T12sXBjoH-POYsGhJ5B6n7PxncqHUQiqk4t-oifgfOh0EtuHZxH4_SOyk54Ax1SU0DBq2yzd9gqMjkFWPuF9uLS-Pmw9mbbfNkE0-ZGUuz9FlLluIIB_TX0phJ8WOwB0b6jpDEwaARnpE6HiEig3abaZcxeSba8_U82iYr23byX" class="w-full h-full object-cover"/></div>
+        </div>
+        <div class="flex-1">
+          <div class="glass-panel rounded-xl overflow-hidden aspect-square relative">
+            <img id="main-image"
+                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuA71NXIy4CHvmQlA87VqJ6N8SBekSifHK-ViOorfeXyfD6Mbw55iPogWza_mmCXzQBtdH3NUyuF2DV4PWxPAkri0G809KCSdqOxfdmpF2AzgHbkGPYk2mxjBeoGEi8XxROiofl1wRPT8jvdtrC3_wXN7zqUAbcaDa3D_Hh9jXQ7g_aEttgLMSKx4H1r_9RQvjbefWvBWGhvQmbF3y4SBWq6KLNlNuHEOW_P92thFANu-WbES4KcffIwcr4GC99Ol2VJTKgxqrOwT8ud"
+                 alt="Mai – Street Fighter" class="w-full h-full object-cover"/>
+            <span class="absolute top-5 left-5 badge-hot text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider">HOT</span>
+            <button class="wish-btn absolute top-5 right-5 w-10 h-10 glass-panel rounded-full flex items-center justify-center text-on-surface-variant">
+              <span class="material-symbols-outlined">favorite</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info -->
+      <div class="flex flex-col fade-up delay-1">
+
+        <div class="flex items-center gap-2 mb-4">
+          <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-[10px] font-bold uppercase tracking-widest">Artist Series</span>
+          <span class="px-3 py-1 bg-green-50 text-green-600 rounded-full text-[10px] font-bold uppercase tracking-widest flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>In Stock
+          </span>
+        </div>
+
+        <h1 class="font-headline text-4xl font-bold text-on-surface leading-tight mb-3">Mai – Street Fighter</h1>
+
+        <div class="flex items-center gap-3 mb-5">
+          <div class="flex text-amber-400">
+            <span class="material-symbols-outlined text-base" style="font-variation-settings:'FILL' 1">star</span>
+            <span class="material-symbols-outlined text-base" style="font-variation-settings:'FILL' 1">star</span>
+            <span class="material-symbols-outlined text-base" style="font-variation-settings:'FILL' 1">star</span>
+            <span class="material-symbols-outlined text-base" style="font-variation-settings:'FILL' 1">star</span>
+            <span class="material-symbols-outlined text-base" style="font-variation-settings:'FILL' 1">star_half</span>
+          </div>
+          <span class="text-sm font-bold text-on-surface">4.5</span>
+          <a href="#reviews" class="text-sm text-on-surface-variant hover:text-primary transition-colors">(148 reviews)</a>
+        </div>
+
+        <div class="flex items-baseline gap-3 mb-5">
+          <span class="font-headline text-4xl font-bold text-primary">$45.00</span>
+          <span class="text-base text-on-surface-variant line-through">$58.00</span>
+          <span class="px-2 py-0.5 bg-red-50 text-red-500 rounded-full text-xs font-bold">Save 22%</span>
+        </div>
+
+        <p class="text-on-surface-variant text-sm leading-relaxed mb-8">
+          Limited edition artist collaboration. Museum-grade heat-transfer print on micro-woven cloth. Built for performance, designed to be seen.
+        </p>
+
+        <div class="border-t border-outline-variant mb-7"></div>
+
+        <!-- Size -->
+        <div class="mb-6">
+          <div class="flex items-center justify-between mb-3">
+            <p class="text-xs font-bold text-on-surface uppercase tracking-widest">Size</p>
+            <button class="text-xs font-semibold text-primary hover:underline flex items-center gap-1">
+              <span class="material-symbols-outlined text-sm">straighten</span>Size Guide
+            </button>
+          </div>
+          <div class="flex gap-2 flex-wrap">
+            <button onclick="setSize(this)" class="size-opt px-4 py-2 rounded-md border border-outline-variant text-xs font-semibold text-on-surface-variant">
+              <span class="block font-bold text-on-surface">S</span><span class="block text-[10px]">250×210</span>
+            </button>
+            <button onclick="setSize(this)" class="size-opt active px-4 py-2 rounded-md border border-outline-variant text-xs font-semibold">
+              <span class="block font-bold">M</span><span class="block text-[10px]">350×280</span>
+            </button>
+            <button onclick="setSize(this)" class="size-opt px-4 py-2 rounded-md border border-outline-variant text-xs font-semibold text-on-surface-variant">
+              <span class="block font-bold text-on-surface">L</span><span class="block text-[10px]">450×400</span>
+            </button>
+            <button onclick="setSize(this)" class="size-opt px-4 py-2 rounded-md border border-outline-variant text-xs font-semibold text-on-surface-variant">
+              <span class="block font-bold text-on-surface">XL</span><span class="block text-[10px]">900×400</span>
+            </button>
+            <button onclick="setSize(this)" class="size-opt px-4 py-2 rounded-md border border-outline-variant text-xs font-semibold text-on-surface-variant">
+              <span class="block font-bold text-on-surface">XXL</span><span class="block text-[10px]">1200×600</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Surface -->
+        <div class="mb-8" id="surface-group">
+          <p class="text-xs font-bold text-on-surface uppercase tracking-widest mb-3">Surface</p>
+          <div class="flex gap-2">
+            <button onclick="setSurface(this)" class="size-opt active flex items-center gap-2 px-4 py-2.5 rounded-md border border-outline-variant text-sm font-semibold">
+              <span class="material-symbols-outlined text-base">speed</span>Speed
+            </button>
+            <button onclick="setSurface(this)" class="size-opt flex items-center gap-2 px-4 py-2.5 rounded-md border border-outline-variant text-sm font-semibold text-on-surface-variant">
+              <span class="material-symbols-outlined text-base">precision_manufacturing</span>Control
+            </button>
+          </div>
+        </div>
+
+        <!-- Qty + CTA -->
+        <div class="flex gap-3 mb-6">
+          <div class="glass-panel rounded-md flex items-center border-white/40 overflow-hidden">
+            <button onclick="changeQty(-1)" class="qty-btn w-11 h-12 flex items-center justify-center text-on-surface-variant">
+              <span class="material-symbols-outlined text-lg">remove</span>
+            </button>
+            <span id="qty-display" class="w-10 text-center font-headline font-bold text-on-surface text-base select-none">1</span>
+            <button onclick="changeQty(1)" class="qty-btn w-11 h-12 flex items-center justify-center text-on-surface-variant">
+              <span class="material-symbols-outlined text-lg">add</span>
+            </button>
+          </div>
+          <button class="flex-1 bg-primary text-white rounded-md font-headline font-bold text-sm py-3.5 flex items-center justify-center gap-2 hover:bg-indigo-700 transition-all active:scale-95 shadow-lg shadow-primary/20">
+            <span class="material-symbols-outlined text-base">add_shopping_cart</span>Add to Cart
+          </button>
+          <button class="wish-btn w-12 h-12 glass-panel rounded-md flex items-center justify-center text-on-surface-variant border-white/40">
+            <span class="material-symbols-outlined">favorite</span>
+          </button>
+        </div>
+
+        <!-- Accordion -->
+        <div class="border-t border-outline-variant">
+          <div class="acc-item border-b border-outline-variant">
+            <button onclick="toggleAcc(this)" class="w-full flex items-center justify-between py-4 text-sm font-bold text-on-surface hover:text-primary transition-colors">
+              Product Details
+              <span class="material-symbols-outlined acc-icon text-on-surface-variant text-lg">expand_more</span>
+            </button>
+            <div class="acc-content">
+              <ul class="space-y-2 text-sm text-on-surface-variant pb-4">
+                <li class="flex gap-2"><span class="material-symbols-outlined text-primary text-base flex-shrink-0">check_circle</span>Micro-woven cloth · anti-slip rubber base</li>
+                <li class="flex gap-2"><span class="material-symbols-outlined text-primary text-base flex-shrink-0">check_circle</span>Museum-grade heat-transfer print · UV resistant</li>
+                <li class="flex gap-2"><span class="material-symbols-outlined text-primary text-base flex-shrink-0">check_circle</span>Stitched edges · 3mm thickness</li>
+                <li class="flex gap-2"><span class="material-symbols-outlined text-primary text-base flex-shrink-0">check_circle</span>Machine washable · cold cycle, air dry</li>
+                <li class="flex gap-2"><span class="material-symbols-outlined text-primary text-base flex-shrink-0">check_circle</span>Limited edition · 500 units worldwide</li>
+              </ul>
+            </div>
+          </div>
+          <div class="acc-item border-b border-outline-variant">
+            <button onclick="toggleAcc(this)" class="w-full flex items-center justify-between py-4 text-sm font-bold text-on-surface hover:text-primary transition-colors">
+              Shipping & Returns
+              <span class="material-symbols-outlined acc-icon text-on-surface-variant text-lg">expand_more</span>
+            </button>
+            <div class="acc-content">
+              <div class="space-y-1.5 text-sm text-on-surface-variant pb-4">
+                <p>Free standard shipping on orders $60+. Express (1–2 days) available at checkout.</p>
+                <p>30-day returns · free return label included.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="py-20 border-t border-slate-100" id="reviews">
+  <div class="section-container">
+    <div class="flex justify-between items-end mb-12">
+      <div>
+        <h2 class="font-headline text-4xl font-bold text-on-surface">Reviews</h2>
+        <p class="text-on-surface-variant mt-1">148 verified purchases</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="font-headline text-5xl font-bold text-on-surface">4.5</span>
+        <div>
+          <div class="flex text-amber-400 mb-1">
+            <span class="material-symbols-outlined text-lg" style="font-variation-settings:'FILL' 1">star</span>
+            <span class="material-symbols-outlined text-lg" style="font-variation-settings:'FILL' 1">star</span>
+            <span class="material-symbols-outlined text-lg" style="font-variation-settings:'FILL' 1">star</span>
+            <span class="material-symbols-outlined text-lg" style="font-variation-settings:'FILL' 1">star</span>
+            <span class="material-symbols-outlined text-lg" style="font-variation-settings:'FILL' 1">star_half</span>
+          </div>
+          <p class="text-xs text-on-surface-variant font-medium">out of 5</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6 mb-8">
+      <div class="glass-panel rounded-xl p-6">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center font-headline font-bold text-primary text-sm">A</div>
+            <div><p class="font-bold text-sm text-on-surface">John Doe</p><p class="text-xs text-on-surface-variant">2 weeks ago</p></div>
+          </div>
+          <div class="flex text-amber-400">
+            <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+            <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+            <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+            <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+            <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+          </div>
+        </div>
+        <p class="text-sm font-bold text-on-surface mb-1">The colors are insane in person</p>
+        <p class="text-sm text-on-surface-variant leading-relaxed">Print quality is on another level. The artwork pops like a poster. Already ordered the XL.</p>
+      </div>
+      <div class="glass-panel rounded-xl p-6">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-full bg-purple-100 flex items-center justify-center font-headline font-bold text-purple-600 text-sm">S</div>
+            <div><p class="font-bold text-sm text-on-surface">John Doe</p><p class="text-xs text-on-surface-variant">1 month ago</p></div>
+          </div>
+          <div class="flex text-amber-400">
+            <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+            <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+            <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+            <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+            <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star_half</span>
+          </div>
+        </div>
+        <p class="text-sm font-bold text-on-surface mb-1">Best mousepad I've ever used</p>
+        <p class="text-sm text-on-surface-variant leading-relaxed">Perfect glide for FPS. Gets compliments every time someone sees my setup.</p>
+      </div>
+      <div class="glass-panel rounded-xl p-6">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-full bg-green-100 flex items-center justify-center font-headline font-bold text-green-600 text-sm">J</div>
+            <div><p class="font-bold text-sm text-on-surface">Jhon Doe</p><p class="text-xs text-on-surface-variant">3 months ago</p></div>
+          </div>
+          <div class="flex text-amber-400">
+            <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+            <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+            <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+            <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+            <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">star</span>
+          </div>
+        </div>
+        <p class="text-sm font-bold text-on-surface mb-1">Worth every penny</p>
+        <p class="text-sm text-on-surface-variant leading-relaxed">Bought 2 — one to use, one sealed. The packaging feels like a collector's item.</p>
+      </div>
+    </div>
+
+    <div class="flex justify-center">
+      <button class="liquid-glass text-on-surface px-10 py-3.5 rounded-md font-headline font-bold text-sm hover:translate-y-[-2px] transition-all border-white/40 flex items-center gap-2">
+        <span class="material-symbols-outlined text-lg">expand_more</span>Load More Reviews
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- RELATED PRODUCTS -->
+<section class="py-24 border-t border-slate-100">
+  <div class="section-container">
+    <div class="flex justify-between items-end mb-12">
+      <div>
+        <h2 class="font-headline text-4xl font-bold text-on-surface">You May Also Like</h2>
+        <p class="text-on-surface-variant mt-1 text-lg">From the same collection</p>
+      </div>
+      <a class="text-primary font-bold text-sm flex items-center gap-1 group" href="shop.html">
+        View All <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+      </a>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+      <div class="related-card group">
+        <div class="glass-panel rounded-lg p-2.5 aspect-[4/5] relative mb-4 overflow-hidden">
+          <img class="related-img w-full h-full object-cover rounded-md" src="https://lh3.googleusercontent.com/aida-public/AB6AXuATMWk0yAyo1KfwAfEZR-Xx3aCJC9N2B03UQbrMoJLZYfF_KE2rtWt6_bzeinzlpicx_qzl2qZGU7SFzn---olwwFLypMkCQRqE5PMk5s_FEDj60rITd5dgvMaDrulnxLLH_j_4gLkpvDp5wLNyltIh3ZzcJcuhc7bLgRDDkHySqCgvqfPWgG5n4OpuL8Ghq2Udsn3pqy_AU7RJTTYPu63bbEd-F0hP2v_Ir6Zf1bcwgIkbBly19rhIPoO7NcXppAbGDlvbS38uiKRq" alt="Shinobi Girl"/>
+        </div>
+        <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-1">Midnight Edition</p>
+        <h3 class="font-headline font-bold text-base leading-snug mb-1">Shinobi Girl</h3>
+        <div class="flex justify-between items-center">
+          <span class="text-lg font-bold text-primary">$39.00</span>
+          <button class="w-9 h-9 rounded-full glass-panel flex items-center justify-center hover:bg-primary hover:text-white transition-all border-white/40"><span class="material-symbols-outlined text-base">shopping_cart</span></button>
+        </div>
+      </div>
+      <div class="related-card group">
+        <div class="glass-panel rounded-lg p-2.5 aspect-[4/5] relative mb-4 overflow-hidden">
+          <img class="related-img w-full h-full object-cover rounded-md" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4HZrS5yb-swImdbVLPD3E7vOTc2IbOiFDWwNVdM7s9fO0F6Do1dcrqagqwXd2v4PUh4lAuRdl739Hr_a548HCW-gAxvPs_moSgjng6m6-GnVDkyDrZhIPnwq1udX5dNaQeucLIV5DV6h8n2j3emJt0AFFiEELDVnM3s8VsSiZf8H0PeOWpkDoWsPG5KnmYP146CxmZyvFVNBAsj1uX1llAH3Heg-ldLUVliNH-6rTLcgWbxdauyIjdjgo35glQvPCSHJ7RRpAjgYR" alt="Neo Tokyo"/>
+          <span class="absolute top-4 left-4 badge-sale text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">−20%</span>
+        </div>
+        <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-1">Cyber Collection</p>
+        <h3 class="font-headline font-bold text-base leading-snug mb-1">Neo Tokyo</h3>
+        <div class="flex justify-between items-center">
+          <div><span class="text-lg font-bold text-primary">$39.20</span><span class="text-xs text-on-surface-variant line-through ml-1.5">$49.00</span></div>
+          <button class="w-9 h-9 rounded-full glass-panel flex items-center justify-center hover:bg-primary hover:text-white transition-all border-white/40"><span class="material-symbols-outlined text-base">shopping_cart</span></button>
+        </div>
+      </div>
+      <div class="related-card group">
+        <div class="glass-panel rounded-lg p-2.5 aspect-[4/5] relative mb-4 overflow-hidden">
+          <img class="related-img w-full h-full object-cover rounded-md" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5eTtJyEW3_Oh0fDJG6c4mcDB6onC956wL8iTauBhqKYYED7hCgQso9D1INyjLf_d1Vopck65rnG6Vtyw8wWWQ_nmyOcnpoxTF0T12sXBjoH-POYsGhJ5B6n7PxncqHUQiqk4t-oifgfOh0EtuHZxH4_SOyk54Ax1SU0DBq2yzd9gqMjkFWPuF9uLS-Pmw9mbbfNkE0-ZGUuz9FlLluIIB_TX0phJ8WOwB0b6jpDEwaARnpE6HiEig3abaZcxeSba8_U82iYr23byX" alt="Royal Ink"/>
+          <span class="absolute top-4 left-4 badge-new text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">NEW</span>
+        </div>
+        <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-1">Premium Fluidity</p>
+        <h3 class="font-headline font-bold text-base leading-snug mb-1">Royal Ink</h3>
+        <div class="flex justify-between items-center">
+          <span class="text-lg font-bold text-primary">$55.00</span>
+          <button class="w-9 h-9 rounded-full glass-panel flex items-center justify-center hover:bg-primary hover:text-white transition-all border-white/40"><span class="material-symbols-outlined text-base">shopping_cart</span></button>
+        </div>
+      </div>
+      <div class="related-card group">
+        <div class="glass-panel rounded-lg p-2.5 aspect-[4/5] relative mb-4 overflow-hidden">
+          <img class="related-img w-full h-full object-cover rounded-md" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgvoMAOHwsrfg1KVJQCn5NTZ57YYUuGWHlToCv3K5DZ4hUMovQ0I4uoagRLGRJ5uYhOFyU4sO__tDSq7MFpd6tqXokvT6N_6rPkaWQ-J_irD84qL6VK8gXPsQHltrOBgXrsgU0u-dCbE5zYMo-msKCTOiy9EnYRTcKYtrtykmNhwMvdX9mcwLnS8SRAe3F9ItmCisfXIKmfZIvQQKzhlf9FbKaSYVp2Scvs20o4Azfk3tDEuexQePKYaM4-1O_3s5VDIIOCZSlgp78" alt="Void Wanderer"/>
+          <span class="absolute top-4 left-4 badge-hot text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">HOT</span>
+        </div>
+        <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-1">Cyber Collection</p>
+        <h3 class="font-headline font-bold text-base leading-snug mb-1">Void Wanderer</h3>
+        <div class="flex justify-between items-center">
+          <span class="text-lg font-bold text-primary">$47.00</span>
+          <button class="w-9 h-9 rounded-full glass-panel flex items-center justify-center hover:bg-primary hover:text-white transition-all border-white/40"><span class="material-symbols-outlined text-base">shopping_cart</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-slate-50 border-t border-slate-200 pt-24 pb-12">
+  <div class="section-container">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-24">
+      <div class="col-span-1 md:col-span-2">
+        <img alt="MINIMALIST" class="h-8 w-auto mb-8" src="https://lh3.googleusercontent.com/aida/ADBb0ujANZWsyTXcsDClfZ0C-f0gZA3uWj4qqTp_8ZZ-a4YoTYLlERVKCvGxzu6FFWkB7i4XoFucqSm9BF_DAYzwnRomSyiwVmhyXqvzZK1J6X0B5CIN-gzSoy5ob5LXhItsXHnbDQyqcyBIwz1b5lZIvdbSavZSkDTW6YFLB6mQBEWo44jY_wKeyG7TmeZL89YTqOgklpYp3O8UoKeAU0b5iU8i6Cug6oUpkNpuhPRChzQ_iCAVCgoHo3irkphR2I5HcYYPEaAwlZzAWr4"/>
+        <p class="text-on-surface-variant max-w-sm mb-8 leading-relaxed text-lg">Redefining the digital desktop through premium materials and uncompromising design philosophy.</p>
+        <div class="flex gap-4">
+          <a class="w-10 h-10 rounded-full glass-panel flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined text-lg">public</span></a>
+          <a class="w-10 h-10 rounded-full glass-panel flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined text-lg">alternate_email</span></a>
+          <a class="w-10 h-10 rounded-full glass-panel flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined text-lg">rss_feed</span></a>
+        </div>
+      </div>
+      <div>
+        <h5 class="font-headline font-bold mb-8 text-xl">Explore</h5>
+        <ul class="space-y-4">
+          <li><a class="text-on-surface-variant hover:text-primary transition-colors text-base" href="#">New Arrivals</a></li>
+          <li><a class="text-on-surface-variant hover:text-primary transition-colors text-base" href="#">Artist Series</a></li>
+          <li><a class="text-on-surface-variant hover:text-primary transition-colors text-base" href="#">Custom Lab</a></li>
+          <li><a class="text-on-surface-variant hover:text-primary transition-colors text-base" href="#">Gift Cards</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5 class="font-headline font-bold mb-8 text-xl">Support</h5>
+        <ul class="space-y-4">
+          <li><a class="text-on-surface-variant hover:text-primary transition-colors text-base" href="#">Shipping Policy</a></li>
+          <li><a class="text-on-surface-variant hover:text-primary transition-colors text-base" href="#">Care Guide</a></li>
+          <li><a class="text-on-surface-variant hover:text-primary transition-colors text-base" href="#">Contact Us</a></li>
+          <li><a class="text-on-surface-variant hover:text-primary transition-colors text-base" href="#">Help Center</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="flex flex-col md:flex-row justify-between items-center pt-12 border-t border-slate-200 gap-6">
+      <p class="text-on-surface-variant text-sm">© 2025 Minimalist Gaming. All rights reserved.</p>
+      <div class="flex gap-8">
+        <a class="text-on-surface-variant hover:text-primary text-sm transition-colors" href="#">Privacy Policy</a>
+        <a class="text-on-surface-variant hover:text-primary text-sm transition-colors" href="#">Terms of Service</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function setImg(thumb, src) {
+    const img = document.getElementById('main-image');
+    img.style.opacity = '0';
+    setTimeout(() => { img.src = src; img.style.opacity = '1'; }, 200);
+    document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+    thumb.classList.add('active');
+  }
+  function setSize(btn) {
+    document.querySelectorAll('.size-opt').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+  function setSurface(btn) {
+    document.getElementById('surface-group').querySelectorAll('.size-opt').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+  let qty = 1;
+  function changeQty(d) {
+    qty = Math.max(1, qty + d);
+    document.getElementById('qty-display').textContent = qty;
+  }
+  function toggleAcc(btn) {
+    const item = btn.parentElement;
+    const content = item.querySelector('.acc-content');
+    const isOpen = content.classList.contains('open');
+    document.querySelectorAll('.acc-content').forEach(c => c.classList.remove('open'));
+    document.querySelectorAll('.acc-item').forEach(i => i.classList.remove('acc-open'));
+    if (!isOpen) { content.classList.add('open'); item.classList.add('acc-open'); }
+  }
+  document.querySelectorAll('.wish-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const icon = btn.querySelector('.material-symbols-outlined');
+      const on = icon.style.fontVariationSettings === "'FILL' 1";
+      icon.style.fontVariationSettings = on ? "'FILL' 0" : "'FILL' 1";
+      btn.style.color = on ? '' : '#ef4444';
+    });
+  });
+</script>
+</body>
+</html>

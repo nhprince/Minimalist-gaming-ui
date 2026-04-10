@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MINIMALIST Gaming | Premium Gaming Aesthetics</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary":             "#4f46e5",
+          "on-primary":          "#ffffff",
+          "surface":             "#fbfcfe",
+          "on-surface":          "#0f172a",
+          "surface-variant":     "#f1f5f9",
+          "on-surface-variant":  "#64748b",
+          "outline-variant":     "#e2e8f0"
+        },
+        fontFamily: {
+          "headline":["Outfit", "sans-serif"],
+          "body":["Outfit", "sans-serif"]
+        },
+        borderRadius: {
+          "md":  "16px",
+          "lg":  "24px",
+          "xl":  "32px",
+          "2xl": "48px"
+        }
+      }
+    }
+  }
+</script>
+<style>
+/* ═══════════════════════════════════════════════════════
+   Apple iOS 26 Liquid Glass — matched to Figma reference
+   
+   KEY INSIGHT from reference:
+   - Nav floats over the hero IMAGE → glass is truly transparent,
+     the colorful image bleeds through giving it color
+   - On white sections glass needs slight white tint to stay visible
+   - The "glass" look is 90% about what's BEHIND it, not the fill
+   ═══════════════════════════════════════════════════════ */
+
+/* ── SVG edge refraction ── */
+.liquid-glass-filter {
+  filter: url(#liquid-distort);
+}
+
+/* ─────────────────────────────────────────────────────
+   GLASS-PANEL — nav bar, buttons, search pill
+   Floats over hero image: nearly transparent
+   Scrolls over white: picks up slight white tint
+   This is exactly how iOS nav bar works — it reads
+   what's behind it dynamically
+   ───────────────────────────────────────────────────── */
+.glass-panel {
+  position: relative;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(32px) saturate(200%) brightness(1.08);
+  -webkit-backdrop-filter: blur(32px) saturate(200%) brightness(1.08);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.90),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    0 8px 32px rgba(0, 0, 0, 0.08),
+    0 24px 48px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+
+/* Upper dome specular arc */
+.glass-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    ellipse 100% 45% at 50% 0%,
+    rgba(255, 255, 255, 0.45) 0%,
+    rgba(255, 255, 255, 0.12) 45%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Bottom rim refraction */
+.glass-panel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    ellipse 70% 30% at 50% 100%,
+    rgba(255, 255, 255, 0.15) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* When nav scrolls over white sections — auto-darken */
+.glass-panel.on-light {
+  background: rgba(255, 255, 255, 0.68);
+  border-color: rgba(255, 255, 255, 0.80);
+}
+
+.ios26-liquid-pill {
+  position: relative;
+  background: rgba(255, 255, 255, 0.01);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 2px 4px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.ios26-liquid-pill::marker {
+  content: '';
+}
+
+.ios26-liquid-pill .ios26-liquid-pill__ring {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  right: 1px;
+  bottom: 1px;
+  border-radius: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.ios26-liquid-pill::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    ellipse 100% 45% at 50% 0%,
+    rgba(255, 255, 255, 0.45) 0%,
+    rgba(255, 255, 255, 0.12) 45%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.ios26-liquid-pill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    ellipse 70% 30% at 50% 100%,
+    rgba(255, 255, 255, 0.15) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.ios26-liquid-pill > * {
+  position: relative;
+  z-index: 2;
+}
+
+.glass-pill {
+  position: relative;
+  background: rgba(255, 255, 255, 0.01);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 2px 4px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.glass-pill::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    ellipse 100% 45% at 50% 0%,
+    rgba(255, 255, 255, 0.45) 0%,
+    rgba(255, 255, 255, 0.12) 45%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.glass-pill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    ellipse 70% 30% at 50% 100%,
+    rgba(255, 255, 255, 0.15) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.glass-pill > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* ─────────────────────────────────────────────────────
+   LIQUID-GLASS — hero CTA card (always over dark image)
+   This perfectly matches the reference pill style:
+   transparent shell, white border rim, dome specular
+   ───────────────────────────────────────────────────── */
+.liquid-glass {
+  position: relative;
+  --lg-border-radius: 12px;
+  --lg-border-alpha: 0.28;
+  --lg-fill-alpha: 0.08;
+  --lg-blur: 18px;
+  --lg-sat: 145%;
+  --lg-brightness: 1.05;
+  --lg-contrast: 1.02;
+  --lg-shadow: 0 10px 28px rgba(0, 0, 0, 0.22), 0 26px 64px rgba(0, 0, 0, 0.14);
+  --lg-glow: 0 0 0 rgba(79, 70, 229, 0);
+  border-radius: var(--lg-border-radius);
+  background: rgba(255, 255, 255, var(--lg-fill-alpha));
+  backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-sat)) brightness(var(--lg-brightness)) contrast(var(--lg-contrast));
+  -webkit-backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-sat)) brightness(var(--lg-brightness)) contrast(var(--lg-contrast));
+  border: 1px solid rgba(255, 255, 255, var(--lg-border-alpha));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.10),
+    var(--lg-shadow),
+    var(--lg-glow);
+  overflow: hidden;
+}
+
+/* Dome specular — curved glass highlight */
+.liquid-glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    ellipse 120% 70% at 50% -10%,
+    rgba(255, 255, 255, 0.40) 0%,
+    rgba(255, 255, 255, 0.12) 32%,
+    rgba(255, 255, 255, 0.06) 48%,
+    transparent 72%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Bottom refraction rim */
+.liquid-glass::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    radial-gradient(
+      ellipse 70% 26% at 50% 110%,
+      rgba(255, 255, 255, 0.12) 0%,
+      transparent 68%
+    ),
+    repeating-linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.035) 0px,
+      rgba(255, 255, 255, 0.035) 1px,
+      rgba(255, 255, 255, 0.00) 2px,
+      rgba(255, 255, 255, 0.00) 4px
+    );
+  opacity: 0.55;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.liquid-glass > * {
+  position: relative;
+  z-index: 3;
+}
+
+.liquid-glass {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.liquid-glass.rim-sheen {
+  border-color: rgba(255, 255, 255, 0.32);
+}
+
+.liquid-glass.rim-sheen:focus-within,
+.liquid-glass.rim-sheen:hover {
+  --lg-fill-alpha: 0.09;
+  --lg-glow: 0 14px 44px rgba(79, 70, 229, 0.12);
+}
+
+.liquid-glass.lg-shadow-sm {
+  --lg-shadow: 0 8px 22px rgba(0, 0, 0, 0.20), 0 22px 58px rgba(0, 0, 0, 0.12);
+}
+
+.liquid-glass.lg-glow-sm {
+  --lg-glow: 0 14px 44px rgba(79, 70, 229, 0.10);
+}[data-draggable="true"] {
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+}[data-draggable="true"].is-dragging {
+  cursor: grabbing;
+}
+
+/* ─────────────────────────────────────────────────────
+   CRYSTAL-GLASS — product cards, image frames
+   Sits on white page — needs enough presence to be a
+   visible frame but shouldn't look like a white box
+   ───────────────────────────────────────────────────── */
+.crystal-glass {
+  position: relative;
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(16px) saturate(160%) brightness(1.02);
+  -webkit-backdrop-filter: blur(16px) saturate(160%) brightness(1.02);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  box-shadow:
+    inset 0 1px 0  rgba(255, 255, 255, 0.90),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.04),
+    0 2px 8px  rgba(0, 0, 0, 0.05),
+    0 8px 24px rgba(0, 0, 0, 0.07);
+  overflow: hidden;
+}
+
+.crystal-glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    ellipse 100% 35% at 50% 0%,
+    rgba(255, 255, 255, 0.40) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── Transitions ── */
+.glass-panel,
+.liquid-glass,
+.crystal-glass {
+  transition: background 0.20s ease, border-color 0.20s ease, box-shadow 0.20s ease;
+}
+
+/* Input inside glass */
+.glass-panel input {
+  background: transparent;
+}
+
+/* ── Layout ── */
+.section-container {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+/* Hero container — full-bleed with controlled inner padding */
+.hero-container-wide {
+  width: 100%;
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+@media (min-width: 768px) {
+  .hero-container-wide {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .hero-container-wide {
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+}
+
+/* Hero banner — truly fills the full first viewport */
+.hero-banner {
+  position: relative;
+  width: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  /* 100vh minus the nav-offset padding + a small gap to show the bottom edge */
+  height: calc(100vh - 88px);
+  min-height: 420px;
+}
+
+@media (min-width: 1024px) {
+  .hero-banner {
+    height: calc(100vh - 100px);
+    border-radius: 24px;
+    min-height: 520px;
+  }
+}
+
+/* ── Gradient text ── */
+.hero-gradient-text {
+  background: linear-gradient(135deg, #4f46e5 0%, #a855f7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 99px; }
+
+/* ── Hover lift ── */
+.hover-lift { transition: transform .25s ease, box-shadow .25s ease; }
+.hover-lift:hover { transform: translateY(-3px); }
+
+/* ── Fade up reveal ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fadeUp .5s ease both; }
+.d1 { animation-delay: .1s; }
+.d2 { animation-delay: .2s; }
+.d3 { animation-delay: .3s; }
+
+/* Nav height compensation */
+.nav-offset {
+  padding-top: 76px; /* 60px nav + small gap */
+}
+
+@media (min-width: 1024px) {
+  .nav-offset {
+    padding-top: 80px;
+  }
+}
+
+/* ── Apple-style Staggered Fade-In ── */[data-staggered-item] {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 1s cubic-bezier(0.25, 0.1, 0.25, 1), transform 1s cubic-bezier(0.25, 0.1, 0.25, 1);
+  will-change: opacity, transform;
+}[data-staggered-item].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Smart CTA Dynamic Foreground Styling ── */
+#smart-cta.text-light-mode .cta-title { color: #ffffff; }
+#smart-cta.text-light-mode .cta-sub   { color: rgba(255, 255, 255, 0.85); }
+#smart-cta.text-light-mode .cta-divider { border-color: rgba(255, 255, 255, 0.25); }
+
+#smart-cta.text-dark-mode .cta-title  { color: #000000; }
+#smart-cta.text-dark-mode .cta-sub    { color: #334155; } /* Slate 700 */
+#smart-cta.text-dark-mode .cta-divider  { border-color: rgba(100, 116, 139, 0.20); } /* Matches default outline */
+
+/* ── Hero Dots Glass Effect ── */
+.hero-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: inset 0 2px 2px rgba(255, 255, 255, 0.5), 0 2px 8px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  position: relative;
+  outline: none;
+}
+.hero-dot:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.05);
+}
+.hero-dot.active {
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.6), inset 0 2px 4px rgba(255, 255, 255, 1);
+  border-color: rgba(255, 255, 255, 0.9);
+  transform: scale(1.15);
+}
+
+@media (max-width: 768px) {
+  .hero-dot { width: 16px; height: 16px; }
+}
+
+</style>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased">
+
+<!-- Hidden SVG filter — edge refraction/lensing matching iOS 26 reference -->
+<svg width="0" height="0" style="position:absolute;pointer-events:none;">
+  <defs>
+    <!-- Strong liquid distortion for hero CTA card -->
+    <filter id="liquid-distort" x="-15%" y="-15%" width="130%" height="130%">
+      <feTurbulence
+        type="fractalNoise"
+        baseFrequency="0.015 0.020"
+        numOctaves="4"
+        seed="3"
+        result="noise"/>
+      <feDisplacementMap
+        in="SourceGraphic"
+        in2="noise"
+        scale="5"
+        xChannelSelector="R"
+        yChannelSelector="G"
+        result="displaced"/>
+      <feComposite in="displaced" in2="SourceGraphic" operator="atop"/>
+    </filter>
+
+    <!-- Softer version for nav bar -->
+    <filter id="liquid-distort-soft" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence
+        type="fractalNoise"
+        baseFrequency="0.012 0.015"
+        numOctaves="2"
+        seed="8"
+        result="noise"/>
+      <feDisplacementMap
+        in="SourceGraphic"
+        in2="noise"
+        scale="1.5"
+        xChannelSelector="R"
+        yChannelSelector="G"
+        result="displaced"/>
+      <feComposite in="displaced" in2="SourceGraphic" operator="atop"/>
+    </filter>
+  </defs>
+</svg>
+
+<!-- ═══════ NAV ═══════ -->
+<nav id="smart-navbar" class="absolute top-0 left-0 right-0 z-50 pt-2 md:pt-3">
+  <div class="max-w-[1440px] mx-auto px-4 md:px-8 xl:px-12">
+    <div class="ios26-liquid-pill h-[60px] rounded-full px-4 md:px-6 flex items-center justify-between gap-4 relative">
+      <div class="ios26-liquid-pill__ring"></div>
+
+      <!-- Left: logo -->
+      <div class="flex items-center min-w-0 z-10 xl:flex-1">
+        <img alt="MINIMALIST Gaming"
+             class="h-7 md:h-8 w-auto object-contain flex-shrink-0"
+             src="logo.png"/>
+      </div>
+
+      <!-- Middle: links -->
+      <div class="hidden lg:flex items-center justify-center gap-3 xl:gap-6 z-10 lg:static xl:absolute xl:left-1/2 xl:top-1/2 xl:-translate-x-1/2 xl:-translate-y-1/2 px-2 xl:px-0">
+        <a class="text-primary font-semibold text-[13px] whitespace-nowrap shrink-0" href="#">Home</a>
+        <a class="text-on-surface-variant hover:text-primary transition-colors text-[13px] whitespace-nowrap shrink-0" href="shop.html">Store</a>
+        <a class="text-on-surface-variant hover:text-primary transition-colors text-[13px] whitespace-nowrap shrink-0" href="#">Design Your Mousepad</a>
+        <a class="text-on-surface-variant hover:text-primary transition-colors text-[13px] whitespace-nowrap shrink-0" href="#">Merchandise</a>
+        <a class="text-on-surface-variant hover:text-primary transition-colors text-[13px] whitespace-nowrap shrink-0" href="#">Community</a>
+        <a class="text-on-surface-variant hover:text-primary transition-colors text-[13px] whitespace-nowrap shrink-0" href="#">Contact</a>
+      </div>
+
+      <!-- Right: search + cart + cta -->
+      <div class="flex items-center justify-end gap-3 xl:gap-5 flex-shrink-0 z-10 xl:flex-1">
+        <div class="relative hidden lg:block">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg select-none">search</span>
+          <input class="bg-white/30 border border-white/50 rounded-full pl-9 pr-4 py-1.5 text-sm w-32 xl:w-44 focus:outline-none focus:ring-2 focus:ring-primary/20 backdrop-blur-md placeholder:text-on-surface-variant/70" placeholder="Search..." type="text"/>
+        </div>
+        <button class="relative flex items-center justify-center w-9 h-9 flex-shrink-0">
+          <span class="material-symbols-outlined text-on-surface-variant text-[22px]">shopping_cart</span>
+        </button>
+        <button class="bg-primary text-white px-4 xl:px-5 py-2 rounded-lg font-headline font-bold text-sm shadow-md shadow-primary/25 hover:bg-indigo-700 transition-all active:scale-95 whitespace-nowrap flex-shrink-0">Sign up</button>
+      </div>
+
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════ SMART FIXED CTA BUTTON (Hidden Initially) ═══════ -->
+<div id="smart-cta" class="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-50 translate-y-24 opacity-0 pointer-events-none transition-all duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] text-dark-mode" data-draggable="true">
+  <div class="ios26-liquid-pill h-[60px] rounded-full px-4 md:px-6 flex items-center gap-3 md:gap-4 shadow-2xl transition-transform duration-300">
+    <div class="ios26-liquid-pill__ring"></div>
+    
+    <div class="cta-divider pr-3 md:pr-4 border-r transition-colors duration-300">
+      <p class="cta-title font-extrabold text-xs md:text-sm font-headline leading-snug whitespace-nowrap transition-colors duration-300">Create Your Own Mousepad</p>
+      <p class="cta-sub text-[10px] font-bold mt-0.5 hidden sm:block whitespace-nowrap transition-colors duration-300">Upload your design and start creating</p>
+    </div>
+    
+    <button class="w-9 h-9 bg-primary text-white rounded-full flex items-center justify-center shadow-md shadow-primary/25 hover:bg-indigo-700 transition-all active:scale-95 flex-shrink-0">
+      <span class="material-symbols-outlined text-[20px]">brush</span>
+    </button>
+  </div>
+</div>
+
+<!-- ═══════ HERO ═══════ -->
+<header class="nav-offset pb-0" data-component-list="StaggeredFadeIn">
+  <div class="hero-container-wide">
+
+    <div id="hero-banner-section" class="hero-banner shadow-2xl relative" data-staggered-item>
+
+      <!-- ── Smooth Swipe Banner Track ── -->
+      <div class="absolute inset-0 overflow-hidden">
+        <div id="hero-slider-track" class="flex w-full h-full transition-transform duration-[1200ms] ease-[cubic-bezier(0.25,1,0.3,1)] will-change-transform" style="transform: translate3d(0%, 0px, 0px);">
+          <!-- Slide 1 -->
+          <img alt="Hero Banner 1" class="w-full shrink-0 h-full object-cover object-center block" src="glide.png"/>
+          <!-- Slide 2 -->
+          <img alt="Hero Banner 2" class="w-full shrink-0 h-full object-cover object-center block" src="glide2.png"/>
+        </div>
+      </div>
+
+      <!-- Subtle dark overlay for text legibility -->
+      <div class="absolute inset-0 bg-gradient-to-r from-black/35 via-black/10 to-transparent pointer-events-none z-10"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none z-10"></div>
+
+      <!-- ── Sliding Dots Indicator ── -->
+      <div class="absolute bottom-6 md:bottom-8 left-6 md:left-8 flex gap-3 md:gap-[14px] z-30">
+        <button aria-label="Show banner 1" class="hero-dot active"></button>
+        <button aria-label="Show banner 2" class="hero-dot"></button>
+      </div>
+
+      <!-- Floating CTA card — bottom right (Original inside Hero) -->
+      <div class="absolute bottom-5 right-5 md:bottom-7 md:right-7 z-30" data-staggered-item>
+        <div class="glass-pill px-4 md:px-5 py-3 md:py-3.5 rounded-xl flex items-center gap-3 md:gap-4" data-draggable="true">
+          <div class="pr-3 md:pr-4 border-r border-white/25">
+            <p class="text-white font-bold text-xs md:text-sm font-headline leading-snug">Create Your Own Mousepad</p>
+            <p class="text-white/60 text-[10px] font-medium mt-0.5 hidden sm:block">Upload your design and start creating</p>
+          </div>
+          <button class="w-10 h-10 bg-white/15 border border-white/30 rounded-lg flex items-center justify-center hover:bg-white/25 transition-all active:scale-95 text-white flex-shrink-0">
+            <span class="material-symbols-outlined text-xl">brush</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+<!-- ═══════ SEARCH BAR ═══════ -->
+<section class="relative z-20 py-10" data-component-list="StaggeredFadeIn">
+  <div class="section-container">
+    <div class="max-w-2xl mx-auto glass-panel rounded-full p-1.5 shadow-xl flex items-center gap-2" data-staggered-item>
+      <div class="w-10 h-10 flex items-center justify-center text-primary flex-shrink-0 ml-1">
+        <span class="material-symbols-outlined text-xl">auto_awesome</span>
+      </div>
+      <input class="flex-grow bg-transparent border-none focus:ring-0 focus:outline-none text-on-surface text-sm px-2 placeholder:text-on-surface-variant/60 min-w-0" placeholder="What are you looking for?" type="text"/>
+      <button class="bg-on-surface text-white px-5 md:px-7 py-3 rounded-full font-headline font-bold text-sm hover:bg-primary transition-all flex-shrink-0">Search</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ STORE / FEATURED ═══════ -->
+<section class="pt-20 md:pt-28 pb-16 md:pb-20" data-component-list="StaggeredFadeIn">
+  <div class="section-container">
+
+    <div class="flex justify-between items-end mb-8 md:mb-10">
+      <div data-staggered-item>
+        <h2 class="font-headline text-3xl md:text-4xl font-bold text-on-surface">Store</h2>
+        <p class="text-on-surface-variant mt-1.5 text-base md:text-lg">Featured Collections</p>
+      </div>
+      <a class="text-primary font-bold text-sm flex items-center gap-1 group" href="shop.html" data-staggered-item>
+        View All
+        <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+      </a>
+    </div>
+
+    <!-- Product grid: 2 cols mobile → 4 cols tablet → 7 cols desktop -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-2.5 md:gap-3">
+      
+      <div data-staggered-item>
+        <div class="group relative aspect-[3/4] flex items-center justify-center cursor-pointer transition-all duration-[400ms] ease-[cubic-bezier(0.15,0,0.2,1)] will-change-transform hover:scale-[1.05] hover:-translate-y-2 z-10 hover:z-20">
+          <img class="w-full h-full object-contain drop-shadow-md group-hover:drop-shadow-xl transition-all duration-[400ms]"
+               src="store1.png"/>
+        </div>
+      </div>
+
+      <div data-staggered-item>
+        <div class="group relative aspect-[3/4] flex items-center justify-center cursor-pointer transition-all duration-[400ms] ease-[cubic-bezier(0.15,0,0.2,1)] will-change-transform hover:scale-[1.05] hover:-translate-y-2 z-10 hover:z-20">
+          <img class="w-full h-full object-contain drop-shadow-md group-hover:drop-shadow-xl transition-all duration-[400ms]"
+               src="store2.png"/>
+        </div>
+      </div>
+
+      <div data-staggered-item>
+        <div class="group relative aspect-[3/4] flex items-center justify-center cursor-pointer transition-all duration-[400ms] ease-[cubic-bezier(0.15,0,0.2,1)] will-change-transform hover:scale-[1.05] hover:-translate-y-2 z-10 hover:z-20">
+          <img class="w-full h-full object-contain drop-shadow-md group-hover:drop-shadow-xl transition-all duration-[400ms]"
+               src="store3.png"/>
+        </div>
+      </div>
+
+      <div data-staggered-item>
+        <div class="group relative aspect-[3/4] flex items-center justify-center cursor-pointer transition-all duration-[400ms] ease-[cubic-bezier(0.15,0,0.2,1)] will-change-transform hover:scale-[1.05] hover:-translate-y-2 z-10 hover:z-20">
+          <img class="w-full h-full object-contain drop-shadow-md group-hover:drop-shadow-xl transition-all duration-[400ms]"
+               src="store4.png"/>
+        </div>
+      </div>
+
+      <div data-staggered-item>
+        <div class="group relative aspect-[3/4] flex items-center justify-center cursor-pointer transition-all duration-[400ms] ease-[cubic-bezier(0.15,0,0.2,1)] will-change-transform hover:scale-[1.05] hover:-translate-y-2 z-10 hover:z-20">
+          <img class="w-full h-full object-contain drop-shadow-md group-hover:drop-shadow-xl transition-all duration-[400ms]"
+               src="store5.png"/>
+        </div>
+      </div>
+
+      <div data-staggered-item>
+        <div class="group relative aspect-[3/4] flex items-center justify-center cursor-pointer transition-all duration-[400ms] ease-[cubic-bezier(0.15,0,0.2,1)] will-change-transform hover:scale-[1.05] hover:-translate-y-2 z-10 hover:z-20">
+          <img class="w-full h-full object-contain drop-shadow-md group-hover:drop-shadow-xl transition-all duration-[400ms]"
+               src="store6.png"/>
+        </div>
+      </div>
+
+      <div data-staggered-item>
+        <div class="group relative aspect-[3/4] flex items-center justify-center cursor-pointer transition-all duration-[400ms] ease-[cubic-bezier(0.15,0,0.2,1)] will-change-transform hover:scale-[1.05] hover:-translate-y-2 z-10 hover:z-20">
+          <img class="w-full h-full object-contain drop-shadow-md group-hover:drop-shadow-xl transition-all duration-[400ms]"
+               src="store7.png"/>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════ MOUSEPAD CATALOG (CLEAN & MINIMAL LAYOUT) ═══════ -->
+<section class="py-20 md:py-24 bg-surface" data-component-list="StaggeredFadeIn">
+  <div class="section-container">
+
+    <h2 class="font-headline text-3xl md:text-4xl font-bold text-on-surface mb-10 md:mb-12" data-staggered-item>Mousepad Design Catalog</h2>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 xl:gap-8">
+        
+        <!-- ITEM 1: Mai Street Fighter -->
+        <div class="group bg-gradient-to-br from-red-50 to-red-100/50 border border-red-200/50 rounded-[32px] p-4 sm:p-5 flex flex-col transition-all duration-[400ms] ease-[cubic-bezier(0.15,0,0.2,1)] will-change-transform hover:scale-[1.02] hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(225,29,72,0.18)] hover:border-red-300/80 z-10 hover:z-20" data-staggered-item>
+            
+            <div class="relative w-full aspect-[4/3] rounded-[24px] bg-red-50 flex-shrink-0 overflow-hidden mb-4 shadow-[inset_0_1px_3px_rgba(225,29,72,0.08)] border border-red-100/50 dark-zone">
+               <!-- Background Desk Image -->
+               <img src="product1-desk.jpeg" 
+                    alt="Mai – Street Fighter Desk" 
+                    class="absolute inset-0 w-full h-full object-cover object-top z-0"/>
+               <!-- Foreground Design Image (Fades out smoothly on Hover) -->
+               <img src="product1.jpeg" 
+                    alt="Mai – Street Fighter" 
+                    class="absolute inset-0 w-full h-full object-cover object-top z-10 transition-opacity duration-[400ms] ease-[cubic-bezier(0.15,0,0.2,1)] group-hover:opacity-0"/>
+               <span class="absolute top-3 left-3 bg-[#e24b4a] text-white font-headline text-[9px] uppercase font-bold tracking-widest px-2.5 py-[3.5px] rounded z-20 shadow-sm leading-none">HOT</span>
+            </div>
+
+            <div class="flex flex-col flex-grow">
+                <div class="flex justify-between items-start mb-[3px] gap-2">
+                    <h3 class="font-headline font-semibold text-[17px] leading-[1.2] text-on-surface truncate tracking-tight transition-colors">Mai – Street Fighter</h3>
+                    <button class="text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-full w-8 h-8 flex items-center justify-center transition-colors shrink-0 -mt-1.5 -mr-2 outline-none">
+                       <span class="material-symbols-outlined text-[18px]">favorite</span>
+                    </button>
+                </div>
+                <p class="text-on-surface-variant text-[10px] font-bold tracking-widest uppercase opacity-70 mb-5 truncate leading-none">Limited Edition Artist</p>
+
+                <!-- Configuration area -->
+                <div class="mt-auto bg-white/60 backdrop-blur-md border border-white/50 rounded-[24px] p-3 mb-5">
+                    
+                    <div class="flex items-center gap-3 mb-3.5 mt-0.5 justify-between">
+                        <span class="text-[9.5px] font-bold uppercase tracking-[0.1em] text-slate-500 opacity-80 flex-shrink-0 mr-1.5 w-[36px]">SIZE</span>
+                        
+                        <div class="flex gap-[6px] justify-end flex-wrap flex-1">
+                            <button class="h-[34px] px-3.5 bg-primary/10 border border-primary text-primary rounded-xl font-bold flex flex-col justify-center items-center shadow-sm w-12 hover:-translate-y-[0.5px] active:scale-95 transition-all">
+                                <span class="text-[11.5px] leading-none mb-[2.5px] block pointer-events-none tracking-tight">XL</span>
+                                <span class="text-[5.5px] uppercase font-bold tracking-[0.08em] opacity-80 border-t border-primary/20 pointer-events-none block pt-[2px] leading-[0.5]">EXT</span>
+                            </button>
+                            
+                            <button class="h-[34px] px-3.5 bg-white border border-slate-200/80 text-slate-500 rounded-xl font-bold flex flex-col justify-center items-center shadow-[0_1px_2px_rgba(0,0,0,0.015)] w-12 hover:border-slate-300 hover:text-slate-700 hover:-translate-y-[0.5px] active:scale-95 transition-all group/size">
+                                <span class="text-[11.5px] leading-none mb-[2.5px] block pointer-events-none tracking-tight">L</span>
+                                <span class="text-[5.5px] uppercase font-bold tracking-[0.08em] opacity-60 border-t border-slate-200/80 pointer-events-none block pt-[2px] leading-[0.5] group-hover/size:border-slate-300 group-hover/size:opacity-90">EXT</span>
+                            </button>
+                            
+                            <button class="h-[34px] px-3.5 bg-white border border-slate-200/80 text-slate-500 rounded-xl font-bold flex flex-col justify-center items-center shadow-[0_1px_2px_rgba(0,0,0,0.015)] w-12 hover:border-slate-300 hover:text-slate-700 hover:-translate-y-[0.5px] active:scale-95 transition-all lg:hidden xl:flex hidden @md:flex group/size2">
+                                <span class="text-[11.5px] leading-none mb-[2.5px] block pointer-events-none tracking-tight">M</span>
+                                <span class="text-[5.5px] uppercase font-bold tracking-[0.08em] opacity-60 border-t border-slate-200/80 pointer-events-none block pt-[2px] leading-[0.5] group-hover/size2:border-slate-300 group-hover/size2:opacity-90">COM</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <span class="text-[9.5px] font-bold uppercase tracking-[0.1em] text-slate-500 opacity-80 w-[36px]">DIM</span>
+                        <div class="flex items-baseline text-[11.5px] font-bold text-slate-800 tracking-tight gap-[1px]">
+                             900
+                             <span class="font-sans font-medium text-slate-400 mx-[3px] text-[10px]">x</span>
+                             400
+                             <span class="text-slate-500 font-sans text-[10px] ml-[4px] font-medium tracking-normal lowercase">mm</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-5">
+                    <div class="flex gap-2">
+                        <button class="flex-1 border border-outline-variant/80 hover:border-primary/40 bg-white shadow-sm hover:shadow text-on-surface-variant hover:text-primary transition-all rounded-[16px] h-[34px] flex items-center justify-center gap-1.5 outline-none focus:ring-2 focus:ring-primary/20 text-[10.5px] font-bold group/act leading-[1]">
+                           <span class="material-symbols-outlined text-[13px] opacity-80 group-hover/act:scale-110 group-hover/act:-rotate-[8deg] transition-transform pb-[1px]">auto_fix_high</span>
+                           Customize
+                        </button>
+                        <button class="flex-1 border border-outline-variant/80 hover:border-slate-300 bg-white shadow-sm hover:shadow text-on-surface-variant hover:text-slate-900 transition-all rounded-[16px] h-[34px] flex items-center justify-center gap-[4px] outline-none focus:ring-2 focus:ring-slate-300 text-[10.5px] font-bold group/act2 leading-[1]">
+                           <span class="material-symbols-outlined text-[15px] opacity-80 group-hover/act2:scale-110 transition-transform -mt-[1px]">fullscreen</span>
+                           Preview
+                        </button>
+                    </div>
+
+                    <div class="flex items-center justify-between pt-1 pb-1">
+                        <div class="font-headline tracking-[-0.04em] text-on-surface font-extrabold flex items-baseline">
+                            <span class="text-[26px] leading-none">৳45</span><span class="text-[12px] leading-none font-bold text-slate-500 opacity-90 pl-px">.00</span>
+                        </div>
+                        <button class="bg-[#4f46e5] hover:bg-[#3f38c6] text-white shadow-[0_6px_12px_-4px_rgba(79,70,229,0.3)] active:scale-[0.96] rounded-[16px] h-[40px] font-headline font-bold text-[13px] px-5 sm:px-[18px] lg:px-4 xl:px-5 flex items-center justify-center transition-all border border-transparent hover:border-white/10 outline-none flex-shrink-0 tracking-wide flex">
+                            Add to cart
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ITEM 2: Shinobi Girl -->
+        <div class="group bg-gradient-to-br from-amber-50 to-amber-100/50 border border-amber-200/50 rounded-[32px] p-4 sm:p-5 flex flex-col transition-all duration-[400ms] ease-[cubic-bezier(0.15,0,0.2,1)] will-change-transform hover:scale-[1.02] hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(245,158,11,0.18)] hover:border-amber-300/80 z-10 hover:z-20" data-staggered-item>
+            
+            <div class="relative w-full aspect-[4/3] rounded-[24px] bg-amber-50 flex-shrink-0 overflow-hidden mb-4 shadow-[inset_0_1px_3px_rgba(245,158,11,0.08)] border border-amber-100/50 dark-zone">
+               <!-- Background Desk Image -->
+               <img src="product2-desk.jpeg" 
+                    alt="Shinobi Girl Desk" 
+                    class="absolute inset-0 w-full h-full object-cover object-[center_35%] z-0"/>
+               <!-- Foreground Design Image -->
+               <img src="product2.jpeg" 
+                    alt="Shinobi Girl" 
+                    class="absolute inset-0 w-full h-full object-cover object-[center_35%] z-10 transition-opacity duration-[400ms] ease-[cubic-bezier(0.15,0,0.2,1)] group-hover:opacity-0"/>
+            </div>
+
+            <div class="flex flex-col flex-grow">
+                <div class="flex justify-between items-start mb-[3px] gap-2">
+                    <h3 class="font-headline font-semibold text-[17px] leading-[1.2] text-on-surface truncate tracking-tight transition-colors">Shinobi Girl</h3>
+                    <button class="text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-full w-8 h-8 flex items-center justify-center transition-colors shrink-0 -mt-1.5 -mr-2 outline-none">
+                       <span class="material-symbols-outlined text-[18px]">favorite</span>
+                    </button>
+                </div>
+                <p class="text-on-surface-variant text-[10px] font-bold tracking-widest uppercase opacity-70 mb-5 truncate leading-none">Midnight Edition</p>
+
+                <div class="mt-auto bg-white/60 backdrop-blur-md border border-white/50 rounded-[24px] p-3 mb-5">
+                    <div class="flex items-center gap-3 mb-3.5 mt-0.5 justify-between">
+                        <span class="text-[9.5px] font-bold uppercase tracking-[0.1em] text-slate-500 opacity-80 flex-shrink-0 mr-1.5 w-[36px]">SIZE</span>
+                        <div class="flex gap-[6px] justify-end flex-wrap flex-1">
+                            <button class="h-[34px] px-3.5 bg-white border border-slate-200/80 text-slate-500 rounded-xl font-bold flex flex-col justify-center items-center shadow-[0_1px_2px_rgba(0,0,0,0.015)] w-12 hover:border-slate-300 hover:text-slate-700 hover:-translate-y-[0.5px] active:scale-95 transition-all group/size">
+                                <span class="text-[11.5px] leading-none mb-[2.5px] block pointer-events-none tracking-tight">XL</span>
+                                <span class="text-[5.5px] uppercase font-bold tracking-[0.08em] opacity-60 border-t border-slate-200/80 pointer-events-none block pt-[2px] leading-[0.5] group-hover/size:border-slate-300 group-hover/size:opacity-90">EXT</span>
+                            </button>
+                            <button class="h-[34px] px-3.5 bg-primary/10 border border-primary text-primary rounded-xl font-bold flex flex-col justify-center items-center shadow-sm w-12 hover:-translate-y-[0.5px] active:scale-95 transition-all">
+                                <span class="text-[11.5px] leading-none mb-[2.5px] block pointer-events-none tracking-tight">L</span>
+                                <span class="text-[5.5px] uppercase font-bold tracking-[0.08em] opacity-80 border-t border-primary/20 pointer-events-none block pt-[2px] leading-[0.5]">EXT</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <span class="text-[9.5px] font-bold uppercase tracking-[0.1em] text-slate-500 opacity-80 w-[36px]">DIM</span>
+                        <div class="flex items-baseline text-[11.5px] font-bold text-slate-800 tracking-tight gap-[1px]">
+                             900<span class="font-sans font-medium text-slate-400 mx-[3px] text-[10px]">x</span>400<span class="text-slate-500 font-sans text-[10px] ml-[4px] font-medium tracking-normal lowercase">mm</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-5">
+                    <div class="flex gap-2">
+                        <button class="flex-1 border border-outline-variant/80 hover:border-primary/40 bg-white shadow-sm hover:shadow text-on-surface-variant hover:text-primary transition-all rounded-[16px] h-[34px] flex items-center justify-center gap-1.5 outline-none focus:ring-2 focus:ring-primary/20 text-[10.5px] font-bold group/act leading-[1]">
+                           <span class="material-symbols-outlined text-[13px] opacity-80 group-hover/act:scale-110 group-hover/act:-rotate-[8deg] transition-transform pb-[1px]">auto_fix_high</span>
+                           Customize
+                        </button>
+                        <button class="flex-1 border border-outline-variant/80 hover:border-slate-300 bg-white shadow-sm hover:shadow text-on-surface-variant hover:text-slate-900 transition-all rounded-[16px] h-[34px] flex items-center justify-center gap-[4px] outline-none focus:ring-2 focus:ring-slate-300 text-[10.5px] font-bold group/act2 leading-[1]">
+                           <span class="material-symbols-outlined text-[15px] opacity-80 group-hover/act2:scale-110 transition-transform -mt-[1px]">fullscreen</span>
+                           Preview
+                        </button>
+                    </div>
+
+                    <div class="flex items-center justify-between pt-1 pb-1">
+                        <div class="font-headline tracking-[-0.04em] text-on-surface font-extrabold flex items-baseline">
+                            <span class="text-[26px] leading-none">৳39</span><span class="text-[12px] leading-none font-bold text-slate-500 opacity-90 pl-px">.00</span>
+                        </div>
+                        <button class="bg-[#4f46e5] hover:bg-[#3f38c6] text-white shadow-[0_6px_12px_-4px_rgba(79,70,229,0.3)] active:scale-[0.96] rounded-[16px] h-[40px] font-headline font-bold text-[13px] px-5 sm:px-[18px] lg:px-4 xl:px-5 flex items-center justify-center transition-all border border-transparent hover:border-white/10 outline-none flex-shrink-0 tracking-wide flex">
+                            Add to cart
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ITEM 3: Neo Tokyo -->
+        <div class="group bg-gradient-to-br from-sky-50 to-sky-100/50 border border-sky-200/50 rounded-[32px] p-4 sm:p-5 flex flex-col transition-all duration-[400ms] ease-[cubic-bezier(0.15,0,0.2,1)] will-change-transform hover:scale-[1.02] hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(14,165,233,0.18)] hover:border-sky-300/80 z-10 hover:z-20" data-staggered-item>
+            
+            <div class="relative w-full aspect-[4/3] rounded-[24px] bg-sky-50 flex-shrink-0 overflow-hidden mb-4 shadow-[inset_0_1px_3px_rgba(14,165,233,0.08)] border border-sky-100/50 dark-zone">
+               <!-- Background Desk Image -->
+               <img src="product3-desk.jpeg" 
+                    alt="Neo Tokyo Desk" 
+                    class="absolute inset-0 w-full h-full object-cover object-[center_35%] z-0"/>
+               <!-- Foreground Design Image -->
+               <img src="product3.jpeg" 
+                    alt="Neo Tokyo" 
+                    class="absolute inset-0 w-full h-full object-cover object-[center_35%] z-10 transition-opacity duration-[400ms] ease-[cubic-bezier(0.15,0,0.2,1)] group-hover:opacity-0"/>
+            </div>
+
+            <div class="flex flex-col flex-grow">
+                <div class="flex justify-between items-start mb-[3px] gap-2">
+                    <h3 class="font-headline font-semibold text-[17px] leading-[1.2] text-on-surface truncate tracking-tight transition-colors">Neo Tokyo</h3>
+                    <button class="text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-full w-8 h-8 flex items-center justify-center transition-colors shrink-0 -mt-1.5 -mr-2 outline-none">
+                       <span class="material-symbols-outlined text-[18px]">favorite</span>
+                    </button>
+                </div>
+                <p class="text-on-surface-variant text-[10px] font-bold tracking-widest uppercase opacity-70 mb-5 truncate leading-none">Cyber Collection</p>
+
+                <div class="mt-auto bg-white/60 backdrop-blur-md border border-white/50 rounded-[24px] p-3 mb-5">
+                    <div class="flex items-center gap-3 mb-3.5 mt-0.5 justify-between">
+                        <span class="text-[9.5px] font-bold uppercase tracking-[0.1em] text-slate-500 opacity-80 flex-shrink-0 mr-1.5 w-[36px]">SIZE</span>
+                        <div class="flex gap-[6px] justify-end flex-wrap flex-1">
+                            <button class="h-[34px] px-3.5 bg-white border border-slate-200/80 text-slate-500 rounded-xl font-bold flex flex-col justify-center items-center shadow-[0_1px_2px_rgba(0,0,0,0.015)] w-12 hover:border-slate-300 hover:text-slate-700 hover:-translate-y-[0.5px] active:scale-95 transition-all group/size">
+                                <span class="text-[11.5px] leading-none mb-[2.5px] block pointer-events-none tracking-tight">L</span>
+                                <span class="text-[5.5px] uppercase font-bold tracking-[0.08em] opacity-60 border-t border-slate-200/80 pointer-events-none block pt-[2px] leading-[0.5] group-hover/size:border-slate-300 group-hover/size:opacity-90">EXT</span>
+                            </button>
+                            <button class="h-[34px] px-3.5 bg-primary/10 border border-primary text-primary rounded-xl font-bold flex flex-col justify-center items-center shadow-sm w-12 hover:-translate-y-[0.5px] active:scale-95 transition-all">
+                                <span class="text-[11.5px] leading-none mb-[2.5px] block pointer-events-none tracking-tight">XL</span>
+                                <span class="text-[5.5px] uppercase font-bold tracking-[0.08em] opacity-80 border-t border-primary/20 pointer-events-none block pt-[2px] leading-[0.5]">COM</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <span class="text-[9.5px] font-bold uppercase tracking-[0.1em] text-slate-500 opacity-80 w-[36px]">DIM</span>
+                        <div class="flex items-baseline text-[11.5px] font-bold text-slate-800 tracking-tight gap-[1px]">
+                             700<span class="font-sans font-medium text-slate-400 mx-[3px] text-[10px]">x</span>300<span class="text-slate-500 font-sans text-[10px] ml-[4px] font-medium tracking-normal lowercase">mm</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-5">
+                    <div class="flex gap-2">
+                        <button class="flex-1 border border-outline-variant/80 hover:border-primary/40 bg-white shadow-sm hover:shadow text-on-surface-variant hover:text-primary transition-all rounded-[16px] h-[34px] flex items-center justify-center gap-1.5 outline-none focus:ring-2 focus:ring-primary/20 text-[10.5px] font-bold group/act leading-[1]">
+                           <span class="material-symbols-outlined text-[13px] opacity-80 group-hover/act:scale-110 group-hover/act:-rotate-[8deg] transition-transform pb-[1px]">auto_fix_high</span>
+                           Customize
+                        </button>
+                        <button class="flex-1 border border-outline-variant/80 hover:border-slate-300 bg-white shadow-sm hover:shadow text-on-surface-variant hover:text-slate-900 transition-all rounded-[16px] h-[34px] flex items-center justify-center gap-[4px] outline-none focus:ring-2 focus:ring-slate-300 text-[10.5px] font-bold group/act2 leading-[1]">
+                           <span class="material-symbols-outlined text-[15px] opacity-80 group-hover/act2:scale-110 transition-transform -mt-[1px]">fullscreen</span>
+                           Preview
+                        </button>
+                    </div>
+
+                    <div class="flex items-center justify-between pt-1 pb-1">
+                        <div class="font-headline tracking-[-0.04em] text-on-surface font-extrabold flex items-baseline">
+                            <span class="text-[26px] leading-none">৳49</span><span class="text-[12px] leading-none font-bold text-slate-500 opacity-90 pl-px">.00</span>
+                        </div>
+                        <button class="bg-[#4f46e5] hover:bg-[#3f38c6] text-white shadow-[0_6px_12px_-4px_rgba(79,70,229,0.3)] active:scale-[0.96] rounded-[16px] h-[40px] font-headline font-bold text-[13px] px-5 sm:px-[18px] lg:px-4 xl:px-5 flex items-center justify-center transition-all border border-transparent hover:border-white/10 outline-none flex-shrink-0 tracking-wide flex">
+                            Add to cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ITEM 4: Royal Ink -->
+        <div class="group bg-gradient-to-br from-indigo-50 to-indigo-100/50 border border-indigo-200/50 rounded-[32px] p-4 sm:p-5 flex flex-col transition-all duration-[400ms] ease-[cubic-bezier(0.15,0,0.2,1)] will-change-transform hover:scale-[1.02] hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(79,70,229,0.18)] hover:border-indigo-300/80 z-10 hover:z-20" data-staggered-item>
+            
+            <div class="relative w-full aspect-[4/3] rounded-[24px] bg-indigo-50 flex-shrink-0 overflow-hidden mb-4 shadow-[inset_0_1px_3px_rgba(79,70,229,0.08)] border border-indigo-100/50 dark-zone">
+               <!-- Background Desk Image -->
+               <img src="product4-desk.jpeg" 
+                    alt="Royal Ink Desk" 
+                    class="absolute inset-0 w-full h-full object-cover object-[center_35%] z-0"/>
+               <!-- Foreground Design Image -->
+               <img src="product4.jpeg" 
+                    alt="Royal Ink" 
+                    class="absolute inset-0 w-full h-full object-cover object-[center_35%] z-10 transition-opacity duration-[400ms] ease-[cubic-bezier(0.15,0,0.2,1)] group-hover:opacity-0"/>
+               <span class="absolute top-3 left-3 bg-primary text-white font-headline text-[9px] uppercase font-bold tracking-widest px-2.5 py-[3.5px] rounded z-20 shadow-sm leading-none">NEW</span>
+            </div>
+
+            <div class="flex flex-col flex-grow">
+                <div class="flex justify-between items-start mb-[3px] gap-2">
+                    <h3 class="font-headline font-semibold text-[17px] leading-[1.2] text-on-surface truncate tracking-tight transition-colors">Royal Ink</h3>
+                    <button class="text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-full w-8 h-8 flex items-center justify-center transition-colors shrink-0 -mt-1.5 -mr-2 outline-none">
+                       <span class="material-symbols-outlined text-[18px]">favorite</span>
+                    </button>
+                </div>
+                <p class="text-on-surface-variant text-[10px] font-bold tracking-widest uppercase opacity-70 mb-5 truncate leading-none">Premium Fluidity Series</p>
+
+                <div class="mt-auto bg-white/60 backdrop-blur-md border border-white/50 rounded-[24px] p-3 mb-5">
+                    <div class="flex items-center gap-3 mb-3.5 mt-0.5 justify-between">
+                        <span class="text-[9.5px] font-bold uppercase tracking-[0.1em] text-slate-500 opacity-80 flex-shrink-0 mr-1.5 w-[36px]">SIZE</span>
+                        <div class="flex gap-[6px] justify-end flex-wrap flex-1">
+                            <button class="h-[34px] px-3.5 bg-primary/10 border border-primary text-primary rounded-xl font-bold flex flex-col justify-center items-center shadow-sm w-12 hover:-translate-y-[0.5px] active:scale-95 transition-all">
+                                <span class="text-[11.5px] leading-none mb-[2.5px] block pointer-events-none tracking-tight">XL</span>
+                                <span class="text-[5.5px] uppercase font-bold tracking-[0.08em] opacity-80 border-t border-primary/20 pointer-events-none block pt-[2px] leading-[0.5]">EXT</span>
+                            </button>
+                            <button class="h-[34px] px-3.5 bg-white border border-slate-200/80 text-slate-500 rounded-xl font-bold flex flex-col justify-center items-center shadow-[0_1px_2px_rgba(0,0,0,0.015)] w-12 hover:border-slate-300 hover:text-slate-700 hover:-translate-y-[0.5px] active:scale-95 transition-all group/size">
+                                <span class="text-[11.5px] leading-none mb-[2.5px] block pointer-events-none tracking-tight">L</span>
+                                <span class="text-[5.5px] uppercase font-bold tracking-[0.08em] opacity-60 border-t border-slate-200/80 pointer-events-none block pt-[2px] leading-[0.5] group-hover/size:border-slate-300 group-hover/size:opacity-90">EXT</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <span class="text-[9.5px] font-bold uppercase tracking-[0.1em] text-slate-500 opacity-80 w-[36px]">DIM</span>
+                        <div class="flex items-baseline text-[11.5px] font-bold text-slate-800 tracking-tight gap-[1px]">
+                             900<span class="font-sans font-medium text-slate-400 mx-[3px] text-[10px]">x</span>400<span class="text-slate-500 font-sans text-[10px] ml-[4px] font-medium tracking-normal lowercase">mm</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-5">
+                    <div class="flex gap-2">
+                        <button class="flex-1 border border-outline-variant/80 hover:border-primary/40 bg-white shadow-sm hover:shadow text-on-surface-variant hover:text-primary transition-all rounded-[16px] h-[34px] flex items-center justify-center gap-1.5 outline-none focus:ring-2 focus:ring-primary/20 text-[10.5px] font-bold group/act leading-[1]">
+                           <span class="material-symbols-outlined text-[13px] opacity-80 group-hover/act:scale-110 group-hover/act:-rotate-[8deg] transition-transform pb-[1px]">auto_fix_high</span>
+                           Customize
+                        </button>
+                        <button class="flex-1 border border-outline-variant/80 hover:border-slate-300 bg-white shadow-sm hover:shadow text-on-surface-variant hover:text-slate-900 transition-all rounded-[16px] h-[34px] flex items-center justify-center gap-[4px] outline-none focus:ring-2 focus:ring-slate-300 text-[10.5px] font-bold group/act2 leading-[1]">
+                           <span class="material-symbols-outlined text-[15px] opacity-80 group-hover/act2:scale-110 transition-transform -mt-[1px]">fullscreen</span>
+                           Preview
+                        </button>
+                    </div>
+
+                    <div class="flex items-center justify-between pt-1 pb-1">
+                        <div class="font-headline tracking-[-0.04em] text-on-surface font-extrabold flex items-baseline">
+                            <span class="text-[26px] leading-none">৳55</span><span class="text-[12px] leading-none font-bold text-slate-500 opacity-90 pl-px">.00</span>
+                        </div>
+                        <button class="bg-[#4f46e5] hover:bg-[#3f38c6] text-white shadow-[0_6px_12px_-4px_rgba(79,70,229,0.3)] active:scale-[0.96] rounded-[16px] h-[40px] font-headline font-bold text-[13px] px-5 sm:px-[18px] lg:px-4 xl:px-5 flex items-center justify-center transition-all border border-transparent hover:border-white/10 outline-none flex-shrink-0 tracking-wide flex">
+                            Add to cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ COMMUNITY / SOCIALS ═══════ -->
+<section class="py-20 md:py-24 bg-surface-variant/25 overflow-hidden border-t border-outline-variant/60" data-component-list="StaggeredFadeIn">
+  <div class="section-container">
+
+    <div class="text-center mb-10 md:mb-14" data-staggered-item>
+      <p class="text-on-surface-variant font-semibold text-sm mb-2">Connect with us on Socials</p>
+      <h2 class="font-headline text-3xl md:text-4xl font-bold text-on-surface mb-5">
+        See what @minimalist_gaming_ is about
+      </h2>
+      <div class="flex justify-center gap-2">
+        <span class="px-4 py-1.5 rounded-full bg-primary/10 text-primary font-bold text-[10px] uppercase tracking-widest">Inspiration</span>
+        <span class="px-4 py-1.5 rounded-full bg-on-surface/5 text-on-surface-variant font-bold text-[10px] uppercase tracking-widest">Showcase</span>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
+      
+      <div data-staggered-item>
+        <div class="h-[280px] sm:h-[360px] xl:h-[500px] rounded-xl overflow-hidden crystal-glass group cursor-pointer transition-all duration-[400ms] ease-[cubic-bezier(0.15,0,0.2,1)] will-change-transform hover:scale-[1.02] hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.12)] z-10 hover:z-20 dark-zone">
+          <img class="w-full h-full object-cover transition-all duration-[400ms]"
+               src="reel1.jpg"/>
+        </div>
+      </div>
+
+      <div data-staggered-item>
+        <div class="h-[280px] sm:h-[360px] xl:h-[500px] rounded-xl overflow-hidden crystal-glass group cursor-pointer transition-all duration-[400ms] ease-[cubic-bezier(0.15,0,0.2,1)] will-change-transform hover:scale-[1.02] hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.12)] z-10 hover:z-20 dark-zone">
+          <img class="w-full h-full object-cover transition-all duration-[400ms]"
+               src="reel2.jpg"/>
+        </div>
+      </div>
+
+      <div data-staggered-item>
+        <div class="h-[280px] sm:h-[360px] xl:h-[500px] rounded-xl overflow-hidden crystal-glass group cursor-pointer transition-all duration-[400ms] ease-[cubic-bezier(0.15,0,0.2,1)] will-change-transform hover:scale-[1.02] hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.12)] z-10 hover:z-20 dark-zone">
+          <img class="w-full h-full object-cover transition-all duration-[400ms]"
+               src="reel3.jpg"/>
+        </div>
+      </div>
+
+      <div data-staggered-item>
+        <div class="h-[280px] sm:h-[360px] xl:h-[500px] rounded-xl overflow-hidden crystal-glass group cursor-pointer transition-all duration-[400ms] ease-[cubic-bezier(0.15,0,0.2,1)] will-change-transform hover:scale-[1.02] hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.12)] z-10 hover:z-20 dark-zone">
+          <img class="w-full h-full object-cover transition-all duration-[400ms]"
+               src="reel4.jpg"/>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════ YOUR SPACE ═══════ -->
+<section class="py-20 md:py-24 border-t border-slate-100" data-component-list="StaggeredFadeIn">
+  <div class="section-container">
+    <div class="grid lg:grid-cols-2 gap-10 xl:gap-20 items-center">
+
+      <div class="crystal-glass aspect-square rounded-2xl flex items-center justify-center relative p-8 md:p-12 overflow-hidden" data-staggered-item>
+        <span class="absolute font-headline font-black text-[8rem] md:text-[11rem] leading-none select-none pointer-events-none text-on-surface/[0.04]">MG</span>
+        <div class="relative flex flex-col items-center gap-3">
+          <img alt="MINIMALIST Gaming"
+               class="h-10 md:h-14 w-auto filter brightness-110"
+               src="logo.png"/>
+          <p class="text-[10px] uppercase tracking-[0.4em] font-bold text-on-surface-variant">Minimalist Gaming</p>
+        </div>
+      </div>
+
+      <div>
+        <h2 class="font-headline text-4xl md:text-5xl font-bold leading-tight mb-8 md:mb-12 text-on-surface" data-staggered-item>Your Space.<br/>Your Design.</h2>
+        <div class="space-y-7 md:space-y-9">
+
+          <div class="flex gap-4 md:gap-5" data-staggered-item>
+            <div class="w-10 h-10 md:w-11 md:h-11 rounded-xl glass-panel flex items-center justify-center flex-shrink-0">
+              <span class="material-symbols-outlined text-primary text-xl">brush</span>
+            </div>
+            <div>
+              <h4 class="font-headline font-bold text-lg md:text-xl mb-1.5 md:mb-2 text-on-surface">Total Creative Control</h4>
+              <p class="text-on-surface-variant leading-relaxed text-sm md:text-base">Upload any artwork or choose from our curated library of world-class artists to build a desk surface that defines you.</p>
+            </div>
+          </div>
+
+          <div class="flex gap-4 md:gap-5" data-staggered-item>
+            <div class="w-10 h-10 md:w-11 md:h-11 rounded-xl glass-panel flex items-center justify-center flex-shrink-0">
+              <span class="material-symbols-outlined text-purple-600 text-xl">high_quality</span>
+            </div>
+            <div>
+              <h4 class="font-headline font-bold text-lg md:text-xl mb-1.5 md:mb-2 text-on-surface">Museum-Grade Printing</h4>
+              <p class="text-on-surface-variant leading-relaxed text-sm md:text-base">Our proprietary heat-transfer process ensures colors remain vibrant and deep, with resolution that rivals fine art prints.</p>
+            </div>
+          </div>
+
+          <div class="flex gap-4 md:gap-5" data-staggered-item>
+            <div class="w-10 h-10 md:w-11 md:h-11 rounded-xl glass-panel flex items-center justify-center flex-shrink-0">
+              <span class="material-symbols-outlined text-teal-600 text-xl">precision_manufacturing</span>
+            </div>
+            <div>
+              <h4 class="font-headline font-bold text-lg md:text-xl mb-1.5 md:mb-2 text-on-surface">Performance Texture</h4>
+              <p class="text-on-surface-variant leading-relaxed text-sm md:text-base">Developed with pro-gamers, our micro-woven surface provides the perfect balance between speed and control.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ CTA BANNER ═══════ -->
+<section class="py-20 md:py-24" data-component-list="StaggeredFadeIn">
+  <div class="section-container">
+    <div class="relative rounded-2xl overflow-hidden flex items-center px-8 md:px-12 xl:px-20 dark-zone"
+         style="min-height: clamp(280px, 40vw, 560px);">
+
+      <img class="absolute inset-0 w-full h-full object-cover"
+           src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAc6gQrMooMBPcQkBaJeJThuXuQvJDpfZMYZrcQ4Yh0RJp1Uj3ZhiK5kVb0V8DTMMZ5ywZjQaNAC59HcV6rs2DkBWAkls4uQmOyLFC8U_B5DbT4lR5to8ON0Tvpd-r0cEIR6jGP6qa_uy4feUl1GjlJ8O59Fh-D7B26VB4x414-hu-5KyMxbb4HYHxb3y9CKEdvXqTEOd_7us3OP3lpM_GlXvgTZ4eZnzxewF44BeDRWpc7mXpxChWF1RXn-0PaJt8XZPGk55GsCj-"/>
+      <div class="absolute inset-0 bg-black/45"></div>
+
+      <div class="relative z-10 max-w-lg py-12 md:py-16">
+        <h2 class="text-4xl md:text-5xl xl:text-6xl font-bold text-white font-headline leading-tight mb-5 md:mb-6" data-staggered-item>
+          Amazing gaming experiences start here
+        </h2>
+        <p class="text-white/75 text-base md:text-lg font-light mb-8 md:mb-10" data-staggered-item>
+          Join over 100,000 gamers and designers who have transformed their battlestations into portals of inspiration.
+        </p>
+        <button class="bg-white text-on-surface px-7 md:px-9 py-3.5 md:py-4 rounded-xl font-headline font-bold text-sm md:text-base hover:bg-primary hover:text-white transition-all active:scale-95 flex items-center gap-3 shadow-lg" data-staggered-item>
+          Join the Community
+          <span class="material-symbols-outlined text-lg">groups</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ FOOTER ═══════ -->
+<footer class="bg-white border-t border-slate-200 pt-16 md:pt-20 pb-8 md:pb-10" data-component-list="StaggeredFadeIn">
+  <div class="section-container">
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-10 mb-12 md:mb-16">
+
+      <div class="col-span-1 sm:col-span-2" data-staggered-item>
+        <img alt="MINIMALIST Gaming"
+             class="h-8 w-auto mb-6 md:mb-7"
+             src="logo.png"/>
+        <p class="text-on-surface-variant max-w-sm mb-6 md:mb-7 leading-relaxed text-sm md:text-base">
+          Redefining the digital desktop through premium materials and uncompromising design philosophy. Your gear should be as beautiful as the games you play.
+        </p>
+        <div class="flex gap-3">
+          <a class="w-10 h-10 rounded-full glass-panel flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors border-slate-200" href="#">
+            <span class="material-symbols-outlined text-lg">public</span>
+          </a>
+          <a class="w-10 h-10 rounded-full glass-panel flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors border-slate-200" href="#">
+            <span class="material-symbols-outlined text-lg">alternate_email</span>
+          </a>
+          <a class="w-10 h-10 rounded-full glass-panel flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors border-slate-200" href="#">
+            <span class="material-symbols-outlined text-lg">rss_feed</span>
+          </a>
+        </div>
+      </div>
+
+      <div data-staggered-item>
+        <h5 class="font-headline font-bold mb-5 md:mb-6 text-base text-on-surface">Explore</h5>
+        <ul class="space-y-3 md:space-y-3.5">
+          <li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">New Arrivals</a></li>
+          <li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Artist Series</a></li>
+          <li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Custom Lab</a></li>
+          <li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Gift Cards</a></li>
+        </ul>
+      </div>
+
+      <div data-staggered-item>
+        <h5 class="font-headline font-bold mb-5 md:mb-6 text-base text-on-surface">Support</h5>
+        <ul class="space-y-3 md:space-y-3.5">
+          <li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Shipping Policy</a></li>
+          <li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Care Guide</a></li>
+          <li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Contact Us</a></li>
+          <li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Help Center</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="flex flex-col md:flex-row justify-between items-center pt-6 md:pt-8 border-t border-slate-200 gap-3 md:gap-4" data-staggered-item>
+      <p class="text-on-surface-variant text-xs">© 2026 Minimalist Gaming. All rights reserved.</p>
+      <div class="flex gap-4 md:gap-6">
+        <a class="text-on-surface-variant hover:text-primary text-xs transition-colors" href="#">Privacy Policy</a>
+        <a class="text-on-surface-variant hover:text-primary text-xs transition-colors" href="#">Terms of Service</a>
+      </div>
+    </div>
+
+  </div>
+</footer>
+
+<script>
+  /* ── Smart CTA Behavior ── */
+  const smartCta = document.getElementById('smart-cta');
+  const heroBanner = document.getElementById('hero-banner-section');
+
+  if (smartCta && heroBanner) {
+    const ctaObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) {
+          // Hero is out of view, show fixed CTA
+          smartCta.classList.remove('translate-y-24', 'opacity-0', 'pointer-events-none');
+        } else {
+          // Hero is in view, hide fixed CTA
+          smartCta.classList.add('translate-y-24', 'opacity-0', 'pointer-events-none');
+        }
+      });
+    }, {
+      root: null,
+      threshold: 0 // Triggers when 0% of hero is visible (fully out of view)
+    });
+
+    ctaObserver.observe(heroBanner);
+  }
+
+  /* ── Apple-Style Scroll Staggered Fade-In Observer ── */
+  document.addEventListener("DOMContentLoaded", () => {
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -15% 0px',
+      threshold: 0
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const container = entry.target;
+          const staggeredItems = container.querySelectorAll('[data-staggered-item]');
+          
+          staggeredItems.forEach((item, index) => {
+            item.style.transitionDelay = `${index * 0.1}s`;
+            void item.offsetWidth;
+            item.classList.add('is-visible');
+          });
+          
+          observer.unobserve(container);
+        }
+      });
+    }, observerOptions);
+
+    const groups = document.querySelectorAll('[data-component-list="StaggeredFadeIn"]');
+    groups.forEach(group => {
+      observer.observe(group);
+    });
+  });
+
+  /* ── Hero Slider Initialization ── */
+  document.addEventListener("DOMContentLoaded", () => {
+    const track = document.getElementById('hero-slider-track');
+    const dots = document.querySelectorAll('.hero-dot');
+    if (track && dots.length > 0) {
+      let currentSlide = 0;
+      let slideCount = dots.length;
+      
+      const goToSlide = (idx) => {
+        currentSlide = idx;
+        track.style.transform = `translate3d(-${currentSlide * 100}%, 0, 0)`;
+        dots.forEach((dot, i) => {
+          dot.classList.toggle('active', i === currentSlide);
+        });
+      };
+      
+      dots.forEach((dot, i) => {
+        dot.addEventListener('click', () => goToSlide(i));
+      });
+      
+      setInterval(() => {
+        let nextIdx = (currentSlide + 1) % slideCount;
+        goToSlide(nextIdx);
+      }, 5000); // 5 sec interval auto scroll
+    }
+  });
+
+  /* ── Existing Draggable Script ── */
+  (() => {
+    const draggableCards = Array.from(document.querySelectorAll('[data-draggable="true"]'));
+
+    for (const el of draggableCards) {
+      let dragging = false;
+      let startX = 0;
+      let startY = 0;
+      let baseX = 0;
+      let baseY = 0;
+      let raf = 0;
+      let nextX = 0;
+      let nextY = 0;
+
+      const apply = () => {
+        raf = 0;
+        el.style.transform = `translate3d(${nextX}px, ${nextY}px, 0)`;
+      };
+
+      const onDown = (e) => {
+        if (e.button !== undefined && e.button !== 0) return;
+        dragging = true;
+        el.classList.add('is-dragging');
+        el.setPointerCapture(e.pointerId);
+        startX = e.clientX;
+        startY = e.clientY;
+        const current = getComputedStyle(el).transform;
+        if (current && current !== 'none') {
+          const m = current.match(/matrix\(([^)]+)\)/);
+          const m3 = current.match(/matrix3d\(([^)]+)\)/);
+          if (m) {
+            const parts = m[1].split(',').map((v) => parseFloat(v.trim()));
+            baseX = parts[4] || 0;
+            baseY = parts[5] || 0;
+          } else if (m3) {
+            const parts = m3[1].split(',').map((v) => parseFloat(v.trim()));
+            baseX = parts[12] || 0;
+            baseY = parts[13] || 0;
+          } else {
+            baseX = 0;
+            baseY = 0;
+          }
+        } else {
+          baseX = 0;
+          baseY = 0;
+        }
+      };
+
+      const onMove = (e) => {
+        if (!dragging) return;
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+        nextX = baseX + dx;
+        nextY = baseY + dy;
+        if (!raf) raf = requestAnimationFrame(apply);
+      };
+
+      const onUp = (e) => {
+        if (!dragging) return;
+        dragging = false;
+        el.classList.remove('is-dragging');
+        try {
+          el.releasePointerCapture(e.pointerId);
+        } catch (_) {}
+      };
+
+      el.addEventListener('pointerdown', onDown);
+      el.addEventListener('pointermove', onMove);
+      el.addEventListener('pointerup', onUp);
+      el.addEventListener('pointercancel', onUp);
+    }
+  })();
+  
+  /* ── CTA Adaptive Color Logic ── */
+  document.addEventListener("DOMContentLoaded", () => {
+    const cta = document.getElementById('smart-cta');
+    if (!cta) return;
+    const darkZones = Array.from(document.querySelectorAll('.dark-zone'));
+    
+    const checkCtaColor = () => {
+      // optimization: skip if hidden
+      if (cta.classList.contains('opacity-0')) return;
+
+      const ctaRect = cta.getBoundingClientRect();
+      const x = ctaRect.left + ctaRect.width / 2;
+      const y = ctaRect.top + ctaRect.height / 2;
+      
+      let isDark = false;
+      for (let i = 0; i < darkZones.length; i++) {
+        const dRect = darkZones[i].getBoundingClientRect();
+        if (x >= dRect.left && x <= dRect.right && y >= dRect.top && y <= dRect.bottom) {
+          isDark = true;
+          break;
+        }
+      }
+      
+      if (isDark) {
+        if (!cta.classList.contains('text-light-mode')) {
+          cta.classList.remove('text-dark-mode');
+          cta.classList.add('text-light-mode');
+        }
+      } else {
+        if (!cta.classList.contains('text-dark-mode')) {
+          cta.classList.remove('text-light-mode');
+          cta.classList.add('text-dark-mode');
+        }
+      }
+    };
+    
+    let scheduled = false;
+    window.addEventListener('scroll', () => {
+      if (!scheduled) {
+        scheduled = true;
+        requestAnimationFrame(() => {
+          checkCtaColor();
+          scheduled = false;
+        });
+      }
+    }, {passive: true});
+    window.addEventListener('resize', checkCtaColor, {passive: true});
+    
+    // Give it a tiny bit of time after paint to check init
+    setTimeout(checkCtaColor, 100);
+  });
+</script>
+
+</body>
+</html>
