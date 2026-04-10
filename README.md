@@ -2,7 +2,10 @@
 
 A premium gaming aesthetics website featuring Apple-inspired scroll reveal animations and iOS 26 liquid glass effects.
 
-## 🎨 Features
+## � Live Demo
+**Deployed Site**: https://nhprinceprodhan.dpdns.org/Minimalist-ui/
+
+## �🎨 Features
 
 - **Apple-style Scroll Reveal**: Smooth fade-up animations with staggered delays matching Apple iPhone website
 - **iOS 26 Liquid Glass**: Modern glassmorphism effects with blur, borders, and highlights
